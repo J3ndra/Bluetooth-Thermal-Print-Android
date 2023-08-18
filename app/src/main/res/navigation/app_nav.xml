@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav"
+    app:startDestination="@id/appFragment">
+
+    <fragment
+        android:id="@+id/appFragment"
+        android:name="com.junianto.edcsekolah.AppFragment"
+        android:label="fragment_app"
+        tools:layout="@layout/fragment_app" >
+        <action
+            android:id="@+id/action_appFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.junianto.edcsekolah.menu.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_EMoneyEnterPriceFragment"
+            app:destination="@id/EMoneyEnterPriceFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_reprintFragment"
+            app:destination="@id/reprintFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_settlementPinFragment"
+            app:destination="@id/settlementPinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.junianto.edcsekolah.menu.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_bluetoothDevicesFragment"
+            app:destination="@id/bluetoothDevicesFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_setupFragment"
+            app:destination="@id/setupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bluetoothDevicesFragment"
+        android:name="com.junianto.edcsekolah.menu.settings.bluetooth.BluetoothDevicesFragment"
+        android:label="fragment_bluetooth_devices"
+        tools:layout="@layout/fragment_bluetooth_devices" />
+    <fragment
+        android:id="@+id/setupFragment"
+        android:name="com.junianto.edcsekolah.menu.settings.setup.SetupFragment"
+        android:label="fragment_setup"
+        tools:layout="@layout/fragment_setup" />
+    <fragment
+        android:id="@+id/nfcTapFragment"
+        android:name="com.junianto.edcsekolah.menu.emoney.NfcTapFragment"
+        android:label="fragment_nfc_tap"
+        tools:layout="@layout/fragment_nfc_tap" >
+        <action
+            android:id="@+id/action_nfcTapFragment_to_EMoneyPinFragment"
+            app:destination="@id/EMoneyPinFragment" />
+        <action
+            android:id="@+id/action_nfcTapFragment_to_menuFragment"
+            app:destination="@id/menuFragment"
+            app:popUpTo="@id/menuFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/EMoneyPinFragment"
+        android:name="com.junianto.edcsekolah.menu.emoney.EMoneyPinFragment"
+        android:label="fragment_e_money_pin"
+        tools:layout="@layout/fragment_e_money_pin" >
+        <action
+            android:id="@+id/action_EMoneyPinFragment_to_menuFragment"
+            app:destination="@id/menuFragment"
+            app:popUpTo="@id/menuFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_EMoneyPinFragment_to_EMoneySuccessFragment"
+            app:destination="@id/EMoneySuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/EMoneyEnterPriceFragment"
+        android:name="com.junianto.edcsekolah.menu.emoney.EMoneyEnterPriceFragment"
+        android:label="fragment_e_money_enter_price"
+        tools:layout="@layout/fragment_e_money_enter_price" >
+        <action
+            android:id="@+id/action_EMoneyEnterPriceFragment_to_nfcTapFragment"
+            app:destination="@id/nfcTapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/EMoneySuccessFragment"
+        android:name="com.junianto.edcsekolah.menu.emoney.EMoneySuccessFragment"
+        android:label="fragment_e_money_success"
+        tools:layout="@layout/fragment_e_money_success" >
+        <action
+            android:id="@+id/action_EMoneySuccessFragment_to_appFragment"
+            app:destination="@id/appFragment"
+            app:popUpTo="@id/appFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/reprintFragment"
+        android:name="com.junianto.edcsekolah.menu.reprint.ReprintFragment"
+        android:label="fragment_reprint"
+        tools:layout="@layout/fragment_reprint" />
+    <fragment
+        android:id="@+id/settlementFragment"
+        android:name="com.junianto.edcsekolah.menu.settlement.SettlementFragment"
+        android:label="fragment_settlement"
+        tools:layout="@layout/fragment_settlement" >
+        <action
+            android:id="@+id/action_settlementFragment_to_appFragment"
+            app:destination="@id/appFragment"
+            app:popUpTo="@id/appFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/settlementPinFragment"
+        android:name="com.junianto.edcsekolah.menu.settlement.SettlementPinFragment"
+        android:label="fragment_settlement_pin"
+        tools:layout="@layout/fragment_settlement_pin" >
+        <action
+            android:id="@+id/action_settlementPinFragment_to_settlementFragment"
+            app:destination="@id/settlementFragment"
+            app:popUpTo="@id/menuFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+</navigation>

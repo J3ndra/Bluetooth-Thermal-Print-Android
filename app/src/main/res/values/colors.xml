@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!--  LIGHT  -->
+    <color name="light_primary">#FF1565C0</color>
+    <color name="light_accent">#FF0277BD</color>
+    <color name="light_error">#FFB00020</color>
+    <color name="light_surface">#FFF8FAFD</color>
+    <color name="light_on_surface">#FF090909</color>
+    <color name="light_background">#FFF8FAFD</color>
+    <color name="light_on_background">#FF090909</color>
+    <color name="light_ok_button">#FF91F4E8</color>
+
+    <!--  DARK  -->
+    <color name="dark_primary">#FF90CAF9</color>
+    <color name="dark_accent">#FFE1F5FE</color>
+    <color name="dark_error">#FFCF6679</color>
+    <color name="dark_surface">#FF171A1C</color>
+    <color name="dark_on_surface">#FFECEDED</color>
+    <color name="dark_background">#FF171A1C</color>
+    <color name="dark_on_background">#FFECEDED</color>
+    <color name="dark_ok_button">#FF005049</color>
+</resources>

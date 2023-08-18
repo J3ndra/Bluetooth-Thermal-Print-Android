@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">EDC Sekolah</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TESTING -->
+    <string name="go_to_menu">Go To Menu</string>
+    <string name="menu_fragment">Menu Fragment</string>
+    <string name="go_to_settings">Go To Settings</string>
+    <string name="device_address">Device Address</string>
+    <string name="device_name">Device Name</string>
+    <string name="test_print">TEST PRINT</string>
+    <string name="test_small_print">TEST SMALL PRINT</string>
+    <string name="test_printooth">TEST PRINTOOTH</string>
+    <string name="icon">icon</string>
+    <string name="menu_title">SALE</string>
+    <string name="menu_desc">Sale is .....</string>
+    <string name="nama_sekolah">Nama Sekolah</string>
+    <string name="nama_jurusan">Nama Jurusan</string>
+    <string name="save">SAVE</string>
+    <string name="cetak">CETAK</string>
+    <string name="app_logo">App Logo</string>
+    <string name="smk_text">Sekolah Menengah Kejuruan</string>
+    <string name="major_text">Bisnis dan Manajemen</string>
+    <string name="alamat_sekolah">Alamat Sekolah</string>
+    <string name="menu">MENU</string>
+    <string name="school_address_text">JL. Raya Cikarang Cibarusah No.27, Cikarang, Cibarusah, Bekasi, Jawa Barat 17530</string>
+    <string name="school_name_text">SMKN 9 SEMARANG</string>
+
+    <!--  NFC  -->
+    <string name="nfc_is_ready">NFC is ready</string>
+    <string name="nfc_payload">NFC PAYLOAD</string>
+    <string name="nfc_not_available_on_this_device">NFC not available on this device</string>
+    <string name="nfc_is_disabled_please_enable_nfc_in_settings">NFC is disabled. Please enable NFC in settings.</string>
+    <string name="nfc_permission_not_granted_grant_permission_in_settings">NFC permission not granted. Grant permission in settings.</string>
+    <string name="nfc_is_enabled_and_permission_is_granted">NFC is enabled and permission is granted.</string>
+    <string name="nfc_status">NFC STATUS</string>
+    <string name="pin_1">1</string>
+    <string name="pin_2">2</string>
+    <string name="pin_3">3</string>
+    <string name="pin_4">4</string>
+    <string name="pin_5">5</string>
+    <string name="pin_6">6</string>
+    <string name="pin_7">7</string>
+    <string name="pin_8">8</string>
+    <string name="pin_9">9</string>
+    <string name="pin_000">000</string>
+    <string name="pin_0">0</string>
+    <string name="stop">stop</string>
+    <string name="clear">clear</string>
+    <string name="ok">ok</string>
+    <string name="tut_wuri_logo">Tut Wuri Logo</string>
+    <string name="enter_pin">ENTER PIN</string>
+    <string name="please_enter_your_pin">PLEASE ENTER YOUR PIN</string>
+    <string name="interpunct">·</string>
+    <string name="enter_amount">ENTER AMOUNT</string>
+    <string name="hint_amount">50.000</string>
+    <string name="masukkan_total_harga_yang_harus_dibayar">Masukkan total harga yang harus dibayar</string>
+    <string name="nfc_total_amount">Tempelkan kartu NFC Anda dengan nominal Rp. 10.000,-</string>
+    <string name="settlements">SETTLEMENTS</string>
+    <string name="total">TOTAL</string>
+    <string name="print_loop">PRINT LOOP</string>
+    <string name="print_text_alignment">PRINT TEXT ALIGNMENT</string>
+    <string name="payment_successful">Payment Successful</string>
+    <string name="reprint">REPRINT</string>
+
+</resources>
