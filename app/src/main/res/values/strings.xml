@@ -63,5 +63,28 @@
     <string name="print_text_alignment">PRINT TEXT ALIGNMENT</string>
     <string name="payment_successful">Payment Successful</string>
     <string name="reprint">REPRINT</string>
+    <string name="card_transaction">CARD TRANSACTION</string>
+    <string name="date">2023-01-01 00:00:00</string>
+    <string name="amount_text">Rp 5.000.000</string>
+    <string name="enter_trace_id">ENTER TRACE ID</string>
+    <string name="enter_trace_id_desc">Masukkan Trace ID yang terdapat pada struck pembayaran</string>
+    <string name="edc_type">EDC NO. 493.24 TYPE.IB1</string>
+    <string name="edc_no">23112022</string>
+    <string name="terminal_id">TERMINAL ID : 000000</string>
+    <string name="merchant_id">MERCHANT ID : 000000000</string>
+    <string name="date_text">DATE : 2023-08-20</string>
+    <string name="time_text">TIME : 22:47</string>
+    <string name="ref_text">REF NO : 000000</string>
+    <string name="aprv_text">APRV : 00000</string>
+    <string name="trace_id_text">TRACE ID : 1</string>
+    <string name="batch_text">BATCH : 000000</string>
+    <string name="status_text">STATUS : PAID</string>
+    <string name="card_no_text">CARD NO : 000000</string>
+    <string name="void_sale">VOID SALE</string>
+    <string name="amount">AMOUNT</string>
+    <string name="minus_amount_text">-Rp. 5.000.000</string>
+    <string name="agreement">CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND/OR SERVICES</string>
+    <string name="customer_copy">** CUSTOMER COPY **</string>
+    <string name="void_text">VOID</string>
 
 </resources>

@@ -50,6 +50,12 @@ class MenuFragment : Fragment() {
                     "SETTLEMENTS" -> {
                         findNavController().navigate(R.id.action_menuFragment_to_settlementPinFragment)
                     }
+                    "REPRINT" -> {
+                        findNavController().navigate(R.id.action_menuFragment_to_reprintFragment)
+                    }
+                    "VOID" -> {
+                        findNavController().navigate(R.id.action_menuFragment_to_searchReceiptFragment)
+                    }
                     "ABOUT" -> {
                         AlertDialog.Builder(requireContext())
                             .setTitle("About")

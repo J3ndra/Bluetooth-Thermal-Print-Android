@@ -1,5 +1,6 @@
 package com.junianto.edcsekolah.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -16,6 +17,15 @@ interface ReceiptDao {
 
     @Query("DELETE FROM receipts")
     fun deleteAllReceipts()
+
+    @Query("SELECT * FROM receipts WHERE id = :id")
+    fun searchReceiptById(id: Int): Receipt
+
+    @Query("DELETE FROM receipts WHERE id = :id")
+    fun deleteReceiptById(id: Int)
+
+    @Query("SELECT EXISTS(SELECT * FROM receipts WHERE id = :id)")
+    fun didReceiptExist(id: Int): LiveData<Boolean>
 
     @Query("DELETE FROM sqlite_sequence WHERE name = 'receipts'")
     fun resetIdCounter()

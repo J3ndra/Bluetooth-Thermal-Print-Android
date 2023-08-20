@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
@@ -63,6 +64,9 @@ class EMoneyPinFragment : Fragment() {
 
     private lateinit var pinEditTexts: List<EditText>
 
+    private lateinit var tvSchoolName: TextView
+    private lateinit var tvSchoolAddress: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,12 +104,18 @@ class EMoneyPinFragment : Fragment() {
         btnPinClear = rootView.findViewById(R.id.btn_clear)
         btnPinOk = rootView.findViewById(R.id.btn_ok)
 
+        tvSchoolName = rootView.findViewById(R.id.tv_school_name)
+        tvSchoolAddress = rootView.findViewById(R.id.tv_school_address)
+
         pinEditTexts = listOf(etPin1, etPin2, etPin3, etPin4, etPin5, etPin6)
 
         // HANDLE APP VIEWMODEL
         appViewModel.appSetup.observe(viewLifecycleOwner) {
             schoolName = it.school_name
             majorName = it.major_name
+
+            tvSchoolName.text = schoolName
+            tvSchoolAddress.text = it.school_address
         }
 
         return rootView

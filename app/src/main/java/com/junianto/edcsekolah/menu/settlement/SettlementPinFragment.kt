@@ -7,16 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
 import com.junianto.edcsekolah.data.model.Receipt
 import com.junianto.edcsekolah.util.PrintingManager
 import com.junianto.edcsekolah.util.getCurrentDate
 import com.junianto.edcsekolah.util.getCurrentDateTime
 import com.junianto.edcsekolah.util.getCurrentTime
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettlementPinFragment : Fragment() {
+
+    private val appViewModel: AppViewModel by viewModels()
 
     // EDIT TEXT
     private lateinit var etPin1: EditText
@@ -43,6 +50,9 @@ class SettlementPinFragment : Fragment() {
     private lateinit var btnPinOk: Button
 
     private lateinit var pinEditTexts: List<EditText>
+
+    private lateinit var tvSchoolName: TextView
+    private lateinit var tvSchoolAddress: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +84,9 @@ class SettlementPinFragment : Fragment() {
         btnPinClear = rootView.findViewById(R.id.btn_clear)
         btnPinOk = rootView.findViewById(R.id.btn_ok)
 
+        tvSchoolName = rootView.findViewById(R.id.tv_school_name)
+        tvSchoolAddress = rootView.findViewById(R.id.tv_school_address)
+
         pinEditTexts = listOf(etPin1, etPin2, etPin3, etPin4, etPin5, etPin6)
 
         return  rootView
@@ -81,6 +94,12 @@ class SettlementPinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        appViewModel.appSetup.observe(viewLifecycleOwner) { appSetup ->
+            // Populate the UI with the retrieved app setup data
+            tvSchoolName.text = appSetup.school_name
+            tvSchoolAddress.text = appSetup.school_address
+        }
 
         btnPin1.setOnClickListener {
             appendPinNumber("1")

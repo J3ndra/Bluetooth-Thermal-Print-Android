@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".menu.emoney.EMoneyPinFragment">
+    tools:context=".menu.delete.SearchReceiptFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -63,13 +63,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/enter_pin"
+                android:text="@string/enter_trace_id"
                 android:textSize="24sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/please_enter_your_pin"
+                android:text="@string/enter_trace_id_desc"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -83,82 +83,18 @@
             app:layout_constraintTop_toBottomOf="@id/ll_please_enter_pin">
 
             <EditText
-                android:id="@+id/et_pin_1"
+                android:id="@+id/et_trace_id"
                 android:background="@color/light_surface"
-                android:hint="@string/interpunct"
+                android:hint="@string/pin_1"
                 android:textStyle="bold"
                 android:padding="16dp"
-                android:inputType="numberPassword"
+                android:inputType="number"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:importantForAutofill="no" />
-            <EditText
-                android:id="@+id/et_pin_2"
-                android:background="@color/light_surface"
-                android:hint="@string/interpunct"
-                android:textStyle="bold"
-                android:padding="16dp"
-                android:inputType="numberPassword"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginEnd="4dp"
-                android:importantForAutofill="no"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/et_pin_3"
-                android:background="@color/light_surface"
-                android:hint="@string/interpunct"
-                android:textStyle="bold"
-                android:padding="16dp"
-                android:inputType="numberPassword"
-                android:layout_weight="1"
-                android:layout_marginEnd="4dp"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:importantForAutofill="no"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/et_pin_4"
-                android:background="@color/light_surface"
-                android:hint="@string/interpunct"
-                android:textStyle="bold"
-                android:padding="16dp"
-                android:inputType="numberPassword"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_marginEnd="4dp"
-                android:importantForAutofill="no"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/et_pin_5"
-                android:background="@color/light_surface"
-                android:hint="@string/interpunct"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:padding="16dp"
-                android:inputType="numberPassword"
-                android:importantForAutofill="no"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginEnd="4dp"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/et_pin_6"
-                android:background="@color/light_surface"
-                android:hint="@string/interpunct"
-                android:textStyle="bold"
-                android:padding="16dp"
-                android:inputType="numberPassword"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:gravity="center"
-                android:importantForAutofill="no"
-                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout

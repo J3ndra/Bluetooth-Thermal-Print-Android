@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_menuFragment_to_settlementPinFragment"
             app:destination="@id/settlementPinFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_searchReceiptFragment"
+            app:destination="@id/searchReceiptFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -128,5 +131,34 @@
             app:destination="@id/settlementFragment"
             app:popUpTo="@id/menuFragment"
             app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchReceiptFragment"
+        android:name="com.junianto.edcsekolah.menu.delete.SearchReceiptFragment"
+        android:label="fragment_search_receipt"
+        tools:layout="@layout/fragment_search_receipt" >
+        <action
+            android:id="@+id/action_searchReceiptFragment_to_deleteFragment"
+            app:destination="@id/deleteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deleteFragment"
+        android:name="com.junianto.edcsekolah.menu.delete.DeleteFragment"
+        android:label="fragment_delete"
+        tools:layout="@layout/fragment_delete" >
+        <action
+            android:id="@+id/action_deleteFragment_to_deletePinFragment"
+            app:destination="@id/deletePinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deletePinFragment"
+        android:name="com.junianto.edcsekolah.menu.delete.DeletePinFragment"
+        android:label="fragment_delete_pin"
+        tools:layout="@layout/fragment_delete_pin" >
+        <action
+            android:id="@+id/action_deletePinFragment_to_appFragment"
+            app:destination="@id/appFragment"
+            app:popUpTo="@id/appFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
