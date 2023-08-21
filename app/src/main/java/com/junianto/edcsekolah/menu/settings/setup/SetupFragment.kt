@@ -195,6 +195,8 @@ class SetupFragment : Fragment() {
         if (uri != null) {
             schoolLogo = uri.toString()
 
+            requireActivity().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
             Glide.with(requireContext())
                 .load(uri)
                 .into(ivSchoolLogo)

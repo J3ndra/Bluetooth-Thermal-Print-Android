@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.junianto.edcsekolah.menu.MenuFragment"
-        android:label="fragment_menu"
+        android:label="EDC SEKOLAH"
         tools:layout="@layout/fragment_menu" >
         <action
             android:id="@+id/action_menuFragment_to_settingsFragment"
@@ -34,11 +34,14 @@
         <action
             android:id="@+id/action_menuFragment_to_searchReceiptFragment"
             app:destination="@id/searchReceiptFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_saleFragment"
+            app:destination="@id/saleFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.junianto.edcsekolah.menu.settings.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="SETTINGS"
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_settingsFragment_to_bluetoothDevicesFragment"
@@ -50,17 +53,17 @@
     <fragment
         android:id="@+id/bluetoothDevicesFragment"
         android:name="com.junianto.edcsekolah.menu.settings.bluetooth.BluetoothDevicesFragment"
-        android:label="fragment_bluetooth_devices"
+        android:label="BLUETOOTH DEVICES"
         tools:layout="@layout/fragment_bluetooth_devices" />
     <fragment
         android:id="@+id/setupFragment"
         android:name="com.junianto.edcsekolah.menu.settings.setup.SetupFragment"
-        android:label="fragment_setup"
+        android:label="SETUP APP"
         tools:layout="@layout/fragment_setup" />
     <fragment
         android:id="@+id/nfcTapFragment"
         android:name="com.junianto.edcsekolah.menu.emoney.NfcTapFragment"
-        android:label="fragment_nfc_tap"
+        android:label="NFC"
         tools:layout="@layout/fragment_nfc_tap" >
         <action
             android:id="@+id/action_nfcTapFragment_to_EMoneyPinFragment"
@@ -74,7 +77,7 @@
     <fragment
         android:id="@+id/EMoneyPinFragment"
         android:name="com.junianto.edcsekolah.menu.emoney.EMoneyPinFragment"
-        android:label="fragment_e_money_pin"
+        android:label="ENTER PIN"
         tools:layout="@layout/fragment_e_money_pin" >
         <action
             android:id="@+id/action_EMoneyPinFragment_to_menuFragment"
@@ -88,7 +91,7 @@
     <fragment
         android:id="@+id/EMoneyEnterPriceFragment"
         android:name="com.junianto.edcsekolah.menu.emoney.EMoneyEnterPriceFragment"
-        android:label="fragment_e_money_enter_price"
+        android:label="ENTER AMOUNT"
         tools:layout="@layout/fragment_e_money_enter_price" >
         <action
             android:id="@+id/action_EMoneyEnterPriceFragment_to_nfcTapFragment"
@@ -97,7 +100,7 @@
     <fragment
         android:id="@+id/EMoneySuccessFragment"
         android:name="com.junianto.edcsekolah.menu.emoney.EMoneySuccessFragment"
-        android:label="fragment_e_money_success"
+        android:label="SUCCESS"
         tools:layout="@layout/fragment_e_money_success" >
         <action
             android:id="@+id/action_EMoneySuccessFragment_to_appFragment"
@@ -108,12 +111,12 @@
     <fragment
         android:id="@+id/reprintFragment"
         android:name="com.junianto.edcsekolah.menu.reprint.ReprintFragment"
-        android:label="fragment_reprint"
+        android:label="REPRINT RECEIPT"
         tools:layout="@layout/fragment_reprint" />
     <fragment
         android:id="@+id/settlementFragment"
         android:name="com.junianto.edcsekolah.menu.settlement.SettlementFragment"
-        android:label="fragment_settlement"
+        android:label="SETTLEMENTS"
         tools:layout="@layout/fragment_settlement" >
         <action
             android:id="@+id/action_settlementFragment_to_appFragment"
@@ -124,7 +127,7 @@
     <fragment
         android:id="@+id/settlementPinFragment"
         android:name="com.junianto.edcsekolah.menu.settlement.SettlementPinFragment"
-        android:label="fragment_settlement_pin"
+        android:label="ENTER PIN"
         tools:layout="@layout/fragment_settlement_pin" >
         <action
             android:id="@+id/action_settlementPinFragment_to_settlementFragment"
@@ -135,7 +138,7 @@
     <fragment
         android:id="@+id/searchReceiptFragment"
         android:name="com.junianto.edcsekolah.menu.delete.SearchReceiptFragment"
-        android:label="fragment_search_receipt"
+        android:label="VOID RECEIPT"
         tools:layout="@layout/fragment_search_receipt" >
         <action
             android:id="@+id/action_searchReceiptFragment_to_deleteFragment"
@@ -144,7 +147,7 @@
     <fragment
         android:id="@+id/deleteFragment"
         android:name="com.junianto.edcsekolah.menu.delete.DeleteFragment"
-        android:label="fragment_delete"
+        android:label="RECEIPT DETAIL"
         tools:layout="@layout/fragment_delete" >
         <action
             android:id="@+id/action_deleteFragment_to_deletePinFragment"
@@ -153,7 +156,7 @@
     <fragment
         android:id="@+id/deletePinFragment"
         android:name="com.junianto.edcsekolah.menu.delete.DeletePinFragment"
-        android:label="fragment_delete_pin"
+        android:label="ENTER PIN"
         tools:layout="@layout/fragment_delete_pin" >
         <action
             android:id="@+id/action_deletePinFragment_to_deleteSuccessFragment"
@@ -162,10 +165,48 @@
     <fragment
         android:id="@+id/deleteSuccessFragment"
         android:name="com.junianto.edcsekolah.menu.delete.DeleteSuccessFragment"
-        android:label="fragment_delete_success"
+        android:label="SUCCESS"
         tools:layout="@layout/fragment_delete_success" >
         <action
             android:id="@+id/action_deleteSuccessFragment_to_appFragment"
+            app:destination="@id/appFragment"
+            app:popUpTo="@id/appFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/saleFragment"
+        android:name="com.junianto.edcsekolah.menu.sale.SaleFragment"
+        android:label="SALE"
+        tools:layout="@layout/fragment_sale" >
+        <action
+            android:id="@+id/action_saleFragment_to_cashEnterAmountFragment"
+            app:destination="@id/cashEnterAmountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cashEnterAmountFragment"
+        android:name="com.junianto.edcsekolah.menu.sale.cash.CashEnterAmountFragment"
+        android:label="ENTER AMOUNT"
+        tools:layout="@layout/fragment_cash_enter_amount" >
+        <action
+            android:id="@+id/action_cashEnterAmountFragment_to_cashEnterPinFragment"
+            app:destination="@id/cashEnterPinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cashEnterPinFragment"
+        android:name="com.junianto.edcsekolah.menu.sale.cash.CashEnterPinFragment"
+        android:label="ENTER PIN"
+        tools:layout="@layout/fragment_cash_enter_pin" >
+        <action
+            android:id="@+id/action_cashEnterPinFragment_to_cashSuccessFragment"
+            app:destination="@id/cashSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cashSuccessFragment"
+        android:name="com.junianto.edcsekolah.menu.sale.cash.CashSuccessFragment"
+        android:label="SUCCESS"
+        tools:layout="@layout/fragment_cash_success" >
+        <action
+            android:id="@+id/action_cashSuccessFragment_to_appFragment"
             app:destination="@id/appFragment"
             app:popUpTo="@id/appFragment"
             app:popUpToInclusive="true" />

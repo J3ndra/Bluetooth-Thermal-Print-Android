@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -78,12 +79,17 @@ class AppFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun setSchoolLogoImage() {
-        if (schoolLogo == "") {
-            ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
-        } else {
-            ivSchoolLogo.setImageURI(Uri.parse(schoolLogo))
-        }
+
+    override fun onResume() {
+        super.onResume()
+        val supportActionBar: androidx.appcompat.app.ActionBar? = (requireActivity() as? AppCompatActivity)?.supportActionBar
+        supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val supportActionBar: androidx.appcompat.app.ActionBar? = (requireActivity() as? AppCompatActivity)?.supportActionBar
+        supportActionBar?.show()
     }
 
 

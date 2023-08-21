@@ -3,15 +3,20 @@ package com.junianto.edcsekolah.util
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.graphics.drawable.toBitmap
 import com.junianto.edcsekolah.R
+import timber.log.Timber
+import java.io.FileDescriptor
+import java.io.IOException
 
 fun loadAndResizeBitmap(context: Context, schoolLogo: String): Bitmap? {
     val contentResolver: ContentResolver = context.contentResolver
@@ -23,7 +28,7 @@ fun loadAndResizeBitmap(context: Context, schoolLogo: String): Bitmap? {
     } else {
         try {
             bitmap = if (Build.VERSION.SDK_INT < 28) {
-                MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(schoolLogo))
+                getBitmapFromUri(context, Uri.parse(schoolLogo))
             } else {
                 val source: ImageDecoder.Source = ImageDecoder.createSource(contentResolver, Uri.parse(schoolLogo))
                 ImageDecoder.decodeBitmap(source)
@@ -39,6 +44,19 @@ fun loadAndResizeBitmap(context: Context, schoolLogo: String): Bitmap? {
     }
 
     return bitmap
+}
+
+private fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
+    try {
+        val parcelFileDescriptor: ParcelFileDescriptor? = context.contentResolver.openFileDescriptor(uri, "r")
+        val fileDescriptor: FileDescriptor? = parcelFileDescriptor?.fileDescriptor
+        val image: Bitmap? = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+        parcelFileDescriptor?.close()
+        return image
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+    return null
 }
 
 fun resizeDrawableToBitmap(context: Context, drawableResId: Int, targetSize: Int): Bitmap {

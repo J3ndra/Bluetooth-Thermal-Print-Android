@@ -41,6 +41,9 @@ class MenuFragment : Fragment() {
         adapter = SettingsAdapter(rvMenuSettingsList, object : SettingsItemClickListener {
             override fun onSettingsItemClick(menuTitle: String) {
                 when (menuTitle) {
+                    "SALE" -> {
+                        findNavController().navigate(R.id.action_menuFragment_to_saleFragment)
+                    }
                     "SETTINGS" -> {
                         findNavController().navigate(R.id.action_menuFragment_to_settingsFragment)
                     }

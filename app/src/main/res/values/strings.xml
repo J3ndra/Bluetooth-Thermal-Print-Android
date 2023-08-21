@@ -88,5 +88,9 @@
     <string name="void_text">VOID</string>
     <string name="void_successful">VOID SUCCESSFUL</string>
     <string name="logo_sekolah">LOGO SEKOLAH</string>
+    <string name="cash">CASH</string>
+    <string name="cash_desc">Pembayaran tunai</string>
+    <string name="cashless">CASHLESS</string>
+    <string name="cashless_desc">Pembayaran non tunai</string>
 
 </resources>
