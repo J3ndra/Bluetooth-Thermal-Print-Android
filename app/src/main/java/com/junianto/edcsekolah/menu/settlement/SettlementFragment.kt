@@ -3,6 +3,7 @@ package com.junianto.edcsekolah.menu.settlement
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import com.junianto.edcsekolah.data.model.Receipt
 import com.junianto.edcsekolah.menu.settlement.adapter.SettlementAdapter
 import com.junianto.edcsekolah.menu.settlement.viewmodel.SettlementViewModel
 import com.junianto.edcsekolah.util.formatAmount
+import com.junianto.edcsekolah.util.loadAndResizeBitmap
 import com.junianto.edcsekolah.util.resizeDrawableToBitmap
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.data.printable.ImagePrintable
@@ -45,6 +47,7 @@ class SettlementFragment : Fragment() {
 
     private lateinit var schoolName: String
     private lateinit var majorName: String
+    private lateinit var schoolLogo: String
 
     private var receipts: List<Receipt> = emptyList()
 
@@ -79,6 +82,7 @@ class SettlementFragment : Fragment() {
         appViewModel.appSetup.observe(viewLifecycleOwner) {
             schoolName = it.school_name
             majorName = it.major_name
+            schoolLogo = it.school_logo
         }
 
         return rootView
@@ -92,7 +96,7 @@ class SettlementFragment : Fragment() {
                 val scanningIntent = Intent(requireContext(), ScanningActivity::class.java)
                 resultLauncher.launch(scanningIntent)
             } else {
-                printSettlement(requireContext(), schoolName, majorName)
+                printSettlement(schoolName, majorName)
 
                 lifecycleScope.launch {
                     viewModel.deleteAllReceiptsAndResetId()
@@ -108,17 +112,17 @@ class SettlementFragment : Fragment() {
     }
 
     private fun printSettlement(
-        context: Context,
         schoolName: String,
         majorName: String,
     ) {
         val printables = ArrayList<Printable>()
 
-        val resizedBitmap = resizeDrawableToBitmap(context, R.drawable.tutwuri_logo, 256)
-        val tutWuriLogo = ImagePrintable.Builder(resizedBitmap)
-            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
-            .setNewLinesAfter(1)
-            .build()
+        val tutWuriLogo = loadAndResizeBitmap(requireContext(), schoolLogo)?.let {
+            ImagePrintable.Builder(it)
+                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                .setNewLinesAfter(1)
+                .build()
+        }
         val smkText = TextPrintable.Builder()
             .setText("SMK\n")
             .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
@@ -194,7 +198,9 @@ class SettlementFragment : Fragment() {
             .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
             .build()
 
-        printables.add(tutWuriLogo)
+        if (tutWuriLogo != null) {
+            printables.add(tutWuriLogo)
+        }
         printables.add(smkText)
         printables.add(majorText)
         printables.add(schoolText)
@@ -245,7 +251,7 @@ class SettlementFragment : Fragment() {
     /* Inbuilt activity to pair device with printer or select from list of pair bluetooth devices */
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == ScanningActivity.SCANNING_FOR_PRINTER &&  result.resultCode == Activity.RESULT_OK) {
-            printSettlement(requireContext(), schoolName, majorName)
+            printSettlement(schoolName, majorName)
         }
     }
 }

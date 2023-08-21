@@ -3,18 +3,26 @@ package com.junianto.edcsekolah.menu.settings.setup
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.util.loadAndResizeBitmap
 import com.junianto.edcsekolah.util.resizeDrawableToBitmap
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.data.printable.ImagePrintable
@@ -42,8 +50,12 @@ class SetupFragment : Fragment() {
     private lateinit var btnCetak: Button
     private lateinit var btnPrintLoop: Button
 
+    private lateinit var ivSchoolLogo: ImageView
+
     // PRINTING SETUP
     private var printing: Printing? = null
+
+    private lateinit var schoolLogo: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +71,8 @@ class SetupFragment : Fragment() {
         etSchoolName = view.findViewById(R.id.et_school_name)
         etSchoolAddress = view.findViewById(R.id.et_school_address)
         etMajorName = view.findViewById(R.id.et_major_name)
+
+        ivSchoolLogo = view.findViewById(R.id.iv_school_logo)
 
         btnPrintLoop = view.findViewById(R.id.btn_print_loop)
         btnPrintLoop.setOnClickListener {
@@ -110,7 +124,7 @@ class SetupFragment : Fragment() {
             val schoolAddress = etSchoolAddress.text.toString()
             val majorName = etMajorName.text.toString()
 
-            appViewModel.updateAppSetup(schoolName, schoolAddress, majorName)
+            appViewModel.updateAppSetup(schoolName, schoolAddress, majorName, schoolLogo)
         }
 
         appViewModel.appSetup.observe(viewLifecycleOwner) { appSetup ->
@@ -118,6 +132,14 @@ class SetupFragment : Fragment() {
             etSchoolName.setText(appSetup.school_name)
             etSchoolAddress.setText(appSetup.school_address)
             etMajorName.setText(appSetup.major_name)
+
+            schoolLogo = appSetup.school_logo
+
+            if (schoolLogo == "") {
+                ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
+            } else {
+                ivSchoolLogo.setImageURI(Uri.parse(appSetup.school_logo))
+            }
         }
 
         btnCetak = view.findViewById(R.id.btn_cetak)
@@ -163,10 +185,24 @@ class SetupFragment : Fragment() {
 
             }
         }
+
+        ivSchoolLogo.setOnClickListener {
+            pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+    }
+
+    private val pickMediaLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            schoolLogo = uri.toString()
+
+            Glide.with(requireContext())
+                .load(uri)
+                .into(ivSchoolLogo)
+        }
     }
 
     /* Inbuilt activity to pair device with printer or select from list of pair bluetooth devices */
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == ScanningActivity.SCANNING_FOR_PRINTER &&  result.resultCode == Activity.RESULT_OK) {
             printDetails()
         }
@@ -188,12 +224,12 @@ class SetupFragment : Fragment() {
     private fun printDetails() {
         val printables = ArrayList<Printable>()
 
-        val resizedBitmap = resizeDrawableToBitmap(requireContext(), R.drawable.tutwuri_logo, 256)
-
-        val tutWuriLogo = ImagePrintable.Builder(resizedBitmap)
-            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
-            .setNewLinesAfter(1)
-            .build()
+        val tutWuriLogo = loadAndResizeBitmap(requireContext(), schoolLogo)?.let {
+            ImagePrintable.Builder(it)
+                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                .setNewLinesAfter(1)
+                .build()
+        }
         val smkText = TextPrintable.Builder()
             .setText("SMK\n")
             .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
@@ -225,7 +261,9 @@ class SetupFragment : Fragment() {
             .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
             .build()
 
-        printables.add(tutWuriLogo)
+        if (tutWuriLogo != null) {
+            printables.add(tutWuriLogo)
+        }
         printables.add(smkText)
         if (majorText != null) {
             printables.add(majorText)

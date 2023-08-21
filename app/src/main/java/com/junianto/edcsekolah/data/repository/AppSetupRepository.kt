@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 interface AppSetupRepository {
     fun getAppSetup(): Flow<AppSetup>
-    suspend fun updateAppSetup(school_name: String, school_address: String, major_name: String)
+    suspend fun updateAppSetup(school_name: String, school_address: String, major_name: String, school_logo: String)
 }
 
 @Singleton
@@ -28,16 +28,18 @@ class DataStoreAppSetupRepository @Inject constructor(context: Context) : AppSet
             val schoolName = preferences[APP_SCHOOL_NAME_KEY] ?: "SMK Negeri 1 Kediri"
             val schoolAddress = preferences[APP_SCHOOL_ADDRESS_KEY] ?: "Jl. Raya Kediri - Pare, Kec. Mojoroto, Kota Kediri, Jawa Timur 64118"
             val majorName = preferences[APP_MAJOR_NAME_KEY] ?: "Rekayasa Perangkat Lunak"
+            val schoolLogo = preferences[APP_SCHOOL_LOGO] ?: ""
 
-            AppSetup(schoolName, schoolAddress, majorName)
+            AppSetup(schoolName, schoolAddress, majorName, schoolLogo)
         }
     }
 
-    override suspend fun updateAppSetup(school_name: String, school_address: String, major_name: String) {
+    override suspend fun updateAppSetup(school_name: String, school_address: String, major_name: String, school_logo: String) {
         dataStore.edit { preferences ->
             preferences[APP_SCHOOL_NAME_KEY] = school_name
             preferences[APP_SCHOOL_ADDRESS_KEY] = school_address
             preferences[APP_MAJOR_NAME_KEY] = major_name
+            preferences[APP_SCHOOL_LOGO] = school_logo
         }
     }
 
@@ -45,5 +47,6 @@ class DataStoreAppSetupRepository @Inject constructor(context: Context) : AppSet
         private val APP_SCHOOL_NAME_KEY = stringPreferencesKey("school_name")
         private val APP_SCHOOL_ADDRESS_KEY = stringPreferencesKey("school_address")
         private val APP_MAJOR_NAME_KEY = stringPreferencesKey("major_name")
+        private val APP_SCHOOL_LOGO = stringPreferencesKey("school_logo")
     }
 }

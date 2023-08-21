@@ -26,6 +26,12 @@ class VoidViewModel @Inject constructor(private val repository: ReceiptRepositor
         }
     }
 
+    fun deleteReceiptById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteReceiptById(id)
+        }
+    }
+
     fun didReceiptExist(id: Int): LiveData<Boolean> {
         return repository.didReceiptExist(id)
     }

@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         "android.permission.BLUETOOTH_ADVERTISE",
         "android.permission.BLUETOOTH_CONNECT",
         "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION"
+        "android.permission.ACCESS_COARSE_LOCATION",
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

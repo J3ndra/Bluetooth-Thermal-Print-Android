@@ -1,5 +1,6 @@
 package com.junianto.edcsekolah.menu.settlement
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -24,6 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class SettlementPinFragment : Fragment() {
 
     private val appViewModel: AppViewModel by viewModels()
+
+    private lateinit var schoolLogo: String
 
     // EDIT TEXT
     private lateinit var etPin1: EditText
@@ -48,6 +52,8 @@ class SettlementPinFragment : Fragment() {
     private lateinit var btnPinStop: Button
     private lateinit var btnPinClear: Button
     private lateinit var btnPinOk: Button
+
+    private lateinit var ivSchoolLogo: ImageView
 
     private lateinit var pinEditTexts: List<EditText>
 
@@ -84,6 +90,8 @@ class SettlementPinFragment : Fragment() {
         btnPinClear = rootView.findViewById(R.id.btn_clear)
         btnPinOk = rootView.findViewById(R.id.btn_ok)
 
+        ivSchoolLogo = rootView.findViewById(R.id.iv_school_logo)
+
         tvSchoolName = rootView.findViewById(R.id.tv_school_name)
         tvSchoolAddress = rootView.findViewById(R.id.tv_school_address)
 
@@ -99,6 +107,14 @@ class SettlementPinFragment : Fragment() {
             // Populate the UI with the retrieved app setup data
             tvSchoolName.text = appSetup.school_name
             tvSchoolAddress.text = appSetup.school_address
+
+            schoolLogo = appSetup.school_logo
+
+            if (schoolLogo == "") {
+                ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
+            } else {
+                ivSchoolLogo.setImageURI(Uri.parse(appSetup.school_logo))
+            }
         }
 
         btnPin1.setOnClickListener {

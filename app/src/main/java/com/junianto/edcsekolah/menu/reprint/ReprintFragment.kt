@@ -33,6 +33,7 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
 
     private lateinit var schoolName: String
     private lateinit var majorName: String
+    private lateinit var schoolLogo: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +57,7 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
         appViewModel.appSetup.observe(viewLifecycleOwner) { appSetup ->
             schoolName = appSetup.school_name
             majorName = appSetup.major_name
+            schoolLogo = appSetup.school_logo
         }
 
         return rootView
@@ -65,6 +67,7 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
         Timber.d("REPRINT FROM FRAGMENT : ${receipt.id}")
         PrintingManager.printManager(
             requireContext(),
+            schoolLogo,
             schoolName,
             majorName,
             receipt.id,

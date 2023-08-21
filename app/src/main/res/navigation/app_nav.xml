@@ -156,7 +156,16 @@
         android:label="fragment_delete_pin"
         tools:layout="@layout/fragment_delete_pin" >
         <action
-            android:id="@+id/action_deletePinFragment_to_appFragment"
+            android:id="@+id/action_deletePinFragment_to_deleteSuccessFragment"
+            app:destination="@id/deleteSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deleteSuccessFragment"
+        android:name="com.junianto.edcsekolah.menu.delete.DeleteSuccessFragment"
+        android:label="fragment_delete_success"
+        tools:layout="@layout/fragment_delete_success" >
+        <action
+            android:id="@+id/action_deleteSuccessFragment_to_appFragment"
             app:destination="@id/appFragment"
             app:popUpTo="@id/appFragment"
             app:popUpToInclusive="true" />

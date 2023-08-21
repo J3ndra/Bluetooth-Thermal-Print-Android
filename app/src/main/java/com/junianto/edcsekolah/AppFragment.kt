@@ -1,15 +1,18 @@
 package com.junianto.edcsekolah
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AppFragment : Fragment() {
@@ -19,6 +22,10 @@ class AppFragment : Fragment() {
     private lateinit var tvSchoolName: TextView
     private lateinit var tvSchoolAddress: TextView
     private lateinit var tvMajorName: TextView
+
+    private lateinit var ivSchoolLogo: ImageView
+
+    private lateinit var schoolLogo: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,14 +48,44 @@ class AppFragment : Fragment() {
         tvSchoolName = view.findViewById(R.id.tv_school_name)
         tvSchoolAddress = view.findViewById(R.id.tv_school_address)
         tvMajorName = view.findViewById(R.id.tv_major_name)
+        ivSchoolLogo = view.findViewById(R.id.iv_school_logo)
 
         appViewModel.appSetup.observe(viewLifecycleOwner) { appSetup ->
             // Populate the UI with the retrieved app setup data
             tvSchoolName.text = appSetup.school_name
             tvSchoolAddress.text = appSetup.school_address
             tvMajorName.text = appSetup.major_name
+
+            schoolLogo = appSetup.school_logo
+
+            Timber.d("APP FRAGMENT : ${appSetup.school_address} | ${appSetup.school_name} | ${appSetup.school_logo}")
+
+            if (schoolLogo == "") {
+                ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
+            } else {
+                ivSchoolLogo.setImageURI(Uri.parse(schoolLogo))
+            }
+
+            Timber.d("APP FRAGMENT : $appSetup")
         }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun setSchoolLogoImage() {
+        if (schoolLogo == "") {
+            ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
+        } else {
+            ivSchoolLogo.setImageURI(Uri.parse(schoolLogo))
+        }
+    }
+
 
 //    EXAMPLE PRINTING
 //    /* Customize your printer here with text, logo and QR code */

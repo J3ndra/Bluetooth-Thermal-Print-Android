@@ -2,6 +2,7 @@ package com.junianto.edcsekolah.menu.emoney
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +39,7 @@ class EMoneyPinFragment : Fragment() {
     private lateinit var amount: String
     private lateinit var schoolName: String
     private lateinit var majorName: String
+    private lateinit var schoolLogo: String
 
     // EDIT TEXT
     private lateinit var etPin1: EditText
@@ -66,6 +69,7 @@ class EMoneyPinFragment : Fragment() {
 
     private lateinit var tvSchoolName: TextView
     private lateinit var tvSchoolAddress: TextView
+    private lateinit var ivSchoolLogo: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,6 +111,8 @@ class EMoneyPinFragment : Fragment() {
         tvSchoolName = rootView.findViewById(R.id.tv_school_name)
         tvSchoolAddress = rootView.findViewById(R.id.tv_school_address)
 
+        ivSchoolLogo = rootView.findViewById(R.id.iv_school_logo)
+
         pinEditTexts = listOf(etPin1, etPin2, etPin3, etPin4, etPin5, etPin6)
 
         // HANDLE APP VIEWMODEL
@@ -116,6 +122,14 @@ class EMoneyPinFragment : Fragment() {
 
             tvSchoolName.text = schoolName
             tvSchoolAddress.text = it.school_address
+
+            schoolLogo = it.school_logo
+
+            if (schoolLogo == "") {
+                ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
+            } else {
+                ivSchoolLogo.setImageURI(Uri.parse(it.school_logo))
+            }
         }
 
         return rootView
@@ -223,6 +237,7 @@ class EMoneyPinFragment : Fragment() {
         eMoneyViewModel.insertReceipt(receipt) { insertedId ->
             PrintingManager.printManager(
                 context = requireContext(),
+                schoolLogo = schoolLogo,
                 schoolName = schoolName,
                 majorName = majorName,
                 traceId = insertedId.toInt(),

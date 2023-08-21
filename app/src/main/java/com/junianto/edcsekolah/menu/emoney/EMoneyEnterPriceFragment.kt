@@ -1,6 +1,7 @@
 package com.junianto.edcsekolah.menu.emoney
 
 import android.app.AlertDialog
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,13 +9,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.text.NumberFormat
 import java.util.Locale
 
+@AndroidEntryPoint
 class EMoneyEnterPriceFragment : Fragment() {
+
+    private val appViewModel: AppViewModel by viewModels()
+
+    private lateinit var ivSchoolLogo: ImageView
+    private lateinit var schoolLogo: String
 
     // EDIT TEXT
     private lateinit var etAmount: EditText
@@ -43,6 +54,8 @@ class EMoneyEnterPriceFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_e_money_enter_price, container, false)
 
         // SETUP VIEW
+        ivSchoolLogo = rootView.findViewById(R.id.iv_school_logo)
+
         etAmount = rootView.findViewById(R.id.et_amount)
 
         btnPin1 = rootView.findViewById(R.id.btn_1)
@@ -65,6 +78,18 @@ class EMoneyEnterPriceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        appViewModel.appSetup.observe(viewLifecycleOwner) { appSetup ->
+            schoolLogo = appSetup.school_logo
+
+            if (appSetup.school_logo == "") {
+                ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
+            } else {
+                ivSchoolLogo.setImageURI(Uri.parse(appSetup.school_logo))
+            }
+
+            Timber.d("APP FRAGMENT : $appSetup")
+        }
 
         btnPin1.setOnClickListener { appendAmount("1") }
         btnPin2.setOnClickListener { appendAmount("2") }

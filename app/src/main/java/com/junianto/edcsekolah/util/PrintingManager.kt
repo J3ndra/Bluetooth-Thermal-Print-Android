@@ -11,6 +11,7 @@ import com.mazenrashed.printooth.data.printer.DefaultPrinter
 object PrintingManager {
     fun printManager(
         context: Context,
+        schoolLogo: String,
         schoolName: String,
         majorName: String,
         traceId: Int,
@@ -24,12 +25,12 @@ object PrintingManager {
     ) {
         val printables = ArrayList<Printable>()
 
-        val resizedBitmap = resizeDrawableToBitmap(context, R.drawable.tutwuri_logo, 256)
-
-        val tutWuriLogo = ImagePrintable.Builder(resizedBitmap)
-            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
-            .setNewLinesAfter(1)
-            .build()
+        val tutWuriLogo = loadAndResizeBitmap(context, schoolLogo)?.let {
+            ImagePrintable.Builder(it)
+                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                .setNewLinesAfter(1)
+                .build()
+        }
         val smkText = TextPrintable.Builder()
             .setText("SMK\n")
             .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
@@ -116,7 +117,7 @@ object PrintingManager {
             .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
             .build()
         val amountText = TextPrintable.Builder()
-            .setText("AMOUNT : ${formatAmount(amount)}\n")
+            .setText("AMOUNT : ${if (type == "VOID") "-${formatAmount(amount)}" else formatAmount(amount)}\n")
             .setAlignment(DefaultPrinter.ALIGNMENT_LEFT)
             .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
             .build()
@@ -138,7 +139,9 @@ object PrintingManager {
             .setNewLinesAfter(3)
             .build()
 
-        printables.add(tutWuriLogo)
+        if (tutWuriLogo != null) {
+            printables.add(tutWuriLogo)
+        }
         printables.add(smkText)
         printables.add(majorText)
         printables.add(schoolText)

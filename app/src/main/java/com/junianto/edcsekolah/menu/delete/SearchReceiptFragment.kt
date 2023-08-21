@@ -1,6 +1,7 @@
 package com.junianto.edcsekolah.menu.delete
 
 import android.app.AlertDialog
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -24,8 +26,11 @@ class SearchReceiptFragment : Fragment() {
 
     private lateinit var tvSchoolName: TextView
     private lateinit var tvSchoolAddress: TextView
+    private lateinit var ivSchoolLogo: ImageView
 
     private lateinit var etTraceId: EditText
+
+    private lateinit var schoolLogo: String
 
     // BUTTON
     private lateinit var btnPin1: Button
@@ -53,6 +58,7 @@ class SearchReceiptFragment : Fragment() {
         tvSchoolName = rootView.findViewById(R.id.tv_school_name)
         tvSchoolAddress = rootView.findViewById(R.id.tv_school_address)
         etTraceId = rootView.findViewById(R.id.et_trace_id)
+        ivSchoolLogo = rootView.findViewById(R.id.iv_school_logo)
 
         // SETUP VIEW
         btnPin1 = rootView.findViewById(R.id.btn_1)
@@ -74,6 +80,14 @@ class SearchReceiptFragment : Fragment() {
         appViewModel.appSetup.observe(viewLifecycleOwner) {
             tvSchoolName.text = it.school_name
             tvSchoolAddress.text = it.school_address
+
+            schoolLogo = it.school_logo
+
+            if (schoolLogo == "") {
+                ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
+            } else {
+                ivSchoolLogo.setImageURI(Uri.parse(it.school_logo))
+            }
         }
 
         return rootView
