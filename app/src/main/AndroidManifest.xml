@@ -29,8 +29,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+        android:maxSdkVersion="29" />
+
+    <!--  ANDROID 13  -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <!--  NFC  -->
     <uses-permission android:name="android.permission.NFC" />
