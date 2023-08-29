@@ -198,9 +198,9 @@ class SettlementFragment : Fragment() {
             .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
             .build()
 
-//        if (tutWuriLogo != null) {
-//            printables.add(tutWuriLogo)
-//        }
+        if (tutWuriLogo != null) {
+            printables.add(tutWuriLogo)
+        }
         printables.add(smkText)
         printables.add(majorText)
         printables.add(schoolText)

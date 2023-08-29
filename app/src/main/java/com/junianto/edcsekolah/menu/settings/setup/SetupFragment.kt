@@ -280,9 +280,9 @@ class SetupFragment : Fragment(), PrintingCallback {
             .build()
 
 
-//        if (tutWuriLogo != null) {
-//            printables.add(tutWuriLogo)
-//        }
+        if (tutWuriLogo != null) {
+            printables.add(tutWuriLogo)
+        }
         printables.add(smkText)
         if (majorText != null) {
             printables.add(majorText)
@@ -293,17 +293,18 @@ class SetupFragment : Fragment(), PrintingCallback {
         val mWriter = MultiFormatWriter()
 
         try {
-            val mMatrix = mWriter.encode("HELLO WORLD", BarcodeFormat.QR_CODE, 128, 128)
+            val mMatrix = mWriter.encode("""
+                EDC SEKOLAH (SAMPLE)
+                CREATED BY JUNIANTO
+            """.trimIndent(), BarcodeFormat.QR_CODE, 256, 256)
             val mEncoder = BarcodeEncoder()
             val mBitmap = mEncoder.createBitmap(mMatrix)
 
             Timber.i("BITMAP : $mBitmap")
 
-            val qrCodeByteArray = PrintingUtils.decodeBitmap(mBitmap)
-
-            Timber.i("QR CODE BYTE ARRAY : $qrCodeByteArray")
-
-            qrCodeByteArray?.let { RawPrintable.Builder(it).build() }?.let { printables.add(it) }
+            printables.add(ImagePrintable.Builder(mBitmap)
+                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                .build())
         } catch (e: WriterException) {
             Timber.e("WRITER EXCEPTION : $e")
             e.printStackTrace()
