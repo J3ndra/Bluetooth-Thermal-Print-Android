@@ -23,6 +23,28 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                def appName = "EDC SEKOLAH"
+                def version = defaultConfig.versionName
+                def buildType = variant.buildType.name
+
+                variant.outputs.all {
+                    outputFileName = "${appName}-${version}-${buildType}.apk"
+                }
+            }
+        }
+
+        debug {
+            applicationVariants.all { variant ->
+                def appName = "EDC SEKOLAH"
+                def version = defaultConfig.versionName
+                def buildType = variant.buildType.name
+
+                variant.outputs.all {
+                    outputFileName = "${appName}-${version}-${buildType}.apk"
+                }
+            }
         }
     }
     compileOptions {
@@ -86,6 +108,12 @@ dependencies {
 
     // GLIDE
     implementation 'com.github.bumptech.glide:glide:4.15.1'
+
+    // PICASSO
+    implementation 'com.squareup.picasso:picasso:2.8'
+
+    // ZXING
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 
     implementation "com.android.support:design:34.0.0"
 }

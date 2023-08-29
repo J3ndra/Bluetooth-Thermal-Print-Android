@@ -1,5 +1,6 @@
 <!-- res/layout/item_bluetooth_device.xml -->
 <LinearLayout
+    android:id="@+id/ll_item_bluetooth_device"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

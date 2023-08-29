@@ -25,9 +25,9 @@ class DataStoreAppSetupRepository @Inject constructor(context: Context) : AppSet
 
     override fun getAppSetup(): Flow<AppSetup> {
         return dataStore.data.map { preferences ->
-            val schoolName = preferences[APP_SCHOOL_NAME_KEY] ?: "SMK Negeri 1 Kediri"
-            val schoolAddress = preferences[APP_SCHOOL_ADDRESS_KEY] ?: "Jl. Raya Kediri - Pare, Kec. Mojoroto, Kota Kediri, Jawa Timur 64118"
-            val majorName = preferences[APP_MAJOR_NAME_KEY] ?: "Rekayasa Perangkat Lunak"
+            val schoolName = preferences[APP_SCHOOL_NAME_KEY] ?: "EDC SEKOLAH"
+            val schoolAddress = preferences[APP_SCHOOL_ADDRESS_KEY] ?: "Jalan Simpang Lima, Kota Semarang"
+            val majorName = preferences[APP_MAJOR_NAME_KEY] ?: "Bisnis dan Manajemen"
             val schoolLogo = preferences[APP_SCHOOL_LOGO] ?: ""
 
             AppSetup(schoolName, schoolAddress, majorName, schoolLogo)

@@ -92,5 +92,11 @@
     <string name="cash_desc">Pembayaran tunai</string>
     <string name="cashless">CASHLESS</string>
     <string name="cashless_desc">Pembayaran non tunai</string>
+    <string name="current_bluetooth_device">CURRENT BLUETOOTH DEVICE</string>
+    <string name="text_current_bluetooth_device">EDC (11:12:13:14:15)</string>
+
+    <string name="text_no_bluetooth_connected">NO BLUETOOTH CONNECTED</string>
+    <string name="text_bluetooth_connect">CONNECT</string>
+    <string name="text_bluetooth_disconnect">DISCONNECT</string>
 
 </resources>

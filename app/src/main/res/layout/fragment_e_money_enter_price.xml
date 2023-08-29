@@ -35,7 +35,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_sale_total"
+                    android:id="@+id/tv_school_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/school_name_text"
@@ -43,7 +43,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_sale_total_value"
+                    android:id="@+id/tv_school_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/school_address_text"

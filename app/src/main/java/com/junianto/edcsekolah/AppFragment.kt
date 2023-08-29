@@ -1,5 +1,6 @@
 package com.junianto.edcsekolah
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.junianto.edcsekolah.util.ImageSaver
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -64,21 +66,19 @@ class AppFragment : Fragment() {
             if (schoolLogo == "") {
                 ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
             } else {
-                ivSchoolLogo.setImageURI(Uri.parse(schoolLogo))
+                val bitmap: Bitmap? = ImageSaver(requireContext())
+                    .setFileName("school_logo.png")
+                    .setDirectoryName("images")
+                    .load()
+
+                ivSchoolLogo.setImageBitmap(bitmap)
+
+//                ivSchoolLogo.setImageURI(Uri.parse(schoolLogo))
             }
 
             Timber.d("APP FRAGMENT : $appSetup")
         }
     }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
 
     override fun onResume() {
         super.onResume()

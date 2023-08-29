@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
@@ -46,12 +47,16 @@ class CashEnterAmountFragment : Fragment() {
     private lateinit var btnPinClear: Button
     private lateinit var btnPinOk: Button
 
+    // TEXT VIEW
+    private lateinit var tvSchoolName: TextView
+    private lateinit var tvSchoolAddress: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_e_money_enter_price, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_cash_enter_amount, container, false)
 
         // SETUP VIEW
         ivSchoolLogo = rootView.findViewById(R.id.iv_school_logo)
@@ -73,6 +78,9 @@ class CashEnterAmountFragment : Fragment() {
         btnPinClear = rootView.findViewById(R.id.btn_clear)
         btnPinOk = rootView.findViewById(R.id.btn_ok)
 
+        tvSchoolName = rootView.findViewById(R.id.tv_school_name)
+        tvSchoolAddress = rootView.findViewById(R.id.tv_school_address)
+
         return rootView
     }
 
@@ -81,6 +89,9 @@ class CashEnterAmountFragment : Fragment() {
 
         appViewModel.appSetup.observe(viewLifecycleOwner) { appSetup ->
             schoolLogo = appSetup.school_logo
+
+            tvSchoolName.text = appSetup.school_name
+            tvSchoolAddress.text = appSetup.school_address
 
             if (appSetup.school_logo == "") {
                 ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)

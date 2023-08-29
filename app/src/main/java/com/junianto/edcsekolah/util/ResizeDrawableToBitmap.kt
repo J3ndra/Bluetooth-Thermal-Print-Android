@@ -4,7 +4,11 @@ import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.ImageDecoder
+import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -24,15 +28,13 @@ fun loadAndResizeBitmap(context: Context, schoolLogo: String): Bitmap? {
 
     if (schoolLogo == "") {
         // Load and resize drawable
-        bitmap = resizeDrawableToBitmap(context, R.drawable.tutwuri_logo, 256)
+        bitmap = resizeDrawableToBitmap(context, R.drawable.tut_wuri_logo_2, 256)
     } else {
         try {
-            bitmap = if (Build.VERSION.SDK_INT < 28) {
-                getBitmapFromUri(context, Uri.parse(schoolLogo))
-            } else {
-                val source: ImageDecoder.Source = ImageDecoder.createSource(contentResolver, Uri.parse(schoolLogo))
-                ImageDecoder.decodeBitmap(source)
-            }
+            bitmap = ImageSaver(context)
+                .setFileName("school_logo.png")
+                .setDirectoryName("images")
+                .load()
 
             // Resize the loaded bitmap to 256x256
             if (bitmap != null) {
@@ -46,7 +48,7 @@ fun loadAndResizeBitmap(context: Context, schoolLogo: String): Bitmap? {
     return bitmap
 }
 
-private fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
+fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
     try {
         val parcelFileDescriptor: ParcelFileDescriptor? = context.contentResolver.openFileDescriptor(uri, "r")
         val fileDescriptor: FileDescriptor? = parcelFileDescriptor?.fileDescriptor
@@ -57,6 +59,21 @@ private fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
         e.printStackTrace()
     }
     return null
+}
+
+
+fun toGrayscale(srcImage: Bitmap): Bitmap {
+    val bmpGrayscale = Bitmap.createBitmap(srcImage.width, srcImage.height, Bitmap.Config.ARGB_8888)
+
+    val canvas = Canvas(bmpGrayscale)
+    val paint = Paint()
+
+    val cm = ColorMatrix()
+    cm.setSaturation(0f)
+    paint.colorFilter = ColorMatrixColorFilter(cm)
+    canvas.drawBitmap(srcImage, 0f, 0f, paint)
+
+    return bmpGrayscale
 }
 
 fun resizeDrawableToBitmap(context: Context, drawableResId: Int, targetSize: Int): Bitmap {
