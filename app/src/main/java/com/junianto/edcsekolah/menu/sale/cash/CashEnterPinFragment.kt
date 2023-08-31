@@ -202,7 +202,7 @@ class CashEnterPinFragment : Fragment() {
     private fun processPin() {
         val enteredPin = pinEditTexts.joinToString("") { it.text.toString() }
 
-        if(enteredPin == "123456") {
+        if(enteredPin == "000000") {
             if (!Printooth.hasPairedPrinter()) {
                 val scanningIntent = Intent(requireContext(), ScanningActivity::class.java)
                 resultLauncher.launch(scanningIntent)

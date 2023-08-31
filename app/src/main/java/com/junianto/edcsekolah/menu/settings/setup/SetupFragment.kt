@@ -186,9 +186,9 @@ class SetupFragment : Fragment(), PrintingCallback {
         if (uri != null) {
             schoolLogo = uri.toString()
 
-            val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-
-            context?.contentResolver?.takePersistableUriPermission(uri, flag)
+//            val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+//
+//            context?.contentResolver?.takePersistableUriPermission(uri, flag)
 
             Glide.with(requireContext())
                 .load(uri)

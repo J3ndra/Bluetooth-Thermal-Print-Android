@@ -183,7 +183,7 @@ class SettlementPinFragment : Fragment() {
     private fun processPin() {
         val enteredPin = pinEditTexts.joinToString("") { it.text.toString() }
 
-        if(enteredPin == "123456") {
+        if(enteredPin == "000000") {
             findNavController().navigate(R.id.action_settlementPinFragment_to_settlementFragment)
         } else {
             Toast.makeText(requireContext(), "PIN Salah", Toast.LENGTH_SHORT).show()
