@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.util.NfcUtils
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.text.NumberFormat
@@ -122,9 +123,14 @@ class EMoneyEnterPriceFragment : Fragment() {
         btnPinOk.setOnClickListener {
             Timber.d("Amount: ${etAmount.text}")
             if (etAmount.text.toString() != "0" && etAmount.text.toString() != "") {
-                findNavController().navigate(R.id.action_EMoneyEnterPriceFragment_to_nfcTapFragment, Bundle().apply {
-                    putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
-                })
+                // Check if defice have nfc support
+                if (NfcUtils.isNfcSupported(requireContext())) {
+                    findNavController().navigate(R.id.action_EMoneyEnterPriceFragment_to_nfcTapFragment, Bundle().apply {
+                        putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
+                    })
+                } else {
+                    findNavController().navigate(R.id.action_EMoneyEnterPriceFragment_to_a90NfcTapFragment)
+                }
             } else {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Perhatian")

@@ -48,6 +48,12 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
+    <!--  A90 PERMISSION  -->
+    <uses-permission android:name="android.permission.CLOUDPOS_PRINTER" />
+    <uses-permission android:name="android.permission.CLOUDPOS_CONTACTLESS_CARD"/>
+    <uses-permission android:name="android.permission.CLOUDPOS_LED" />
+    <uses-permission android:name="android.permission.CLOUDPOS_SMARTCARD"/>
+
     <application
         android:name=".EDCSekolah"
         android:allowBackup="true"

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.junianto.edcsekolah.menu.emoney.NfcTapFragment
 import com.junianto.edcsekolah.util.ByteArrayToHexString
+import com.junianto.edcsekolah.util.DeviceInfo
 import com.vanstone.appsdk.client.ISdkStatue
 import com.vanstone.l2.Common
 import com.vanstone.l2.CommonCB
@@ -49,7 +50,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initA90Sdk()
+        val cpuArchitecture = DeviceInfo.getCpuArchitecture()
+        Timber.i("CPU Architecture: $cpuArchitecture")
+
+        when (cpuArchitecture) {
+            "armeabi" -> {
+                initA90Sdk()
+            }
+            "armeabi-v7a" -> {
+                initA90Sdk()
+            }
+            else -> {
+                Toast.makeText(this, "Unsupported CPU Architecture", Toast.LENGTH_LONG).show()
+            }
+        }
 
         Timber.i("MainActivity created")
 
