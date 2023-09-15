@@ -2,10 +2,8 @@ package com.junianto.edcsekolah.menu.settings.setup
 
 import android.app.Activity
 import android.bluetooth.BluetoothSocket
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,7 +15,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -25,15 +22,14 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.junianto.edcsekolah.a90.printer.A90PrintManager
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
 import com.junianto.edcsekolah.util.ImageSaver
-import com.junianto.edcsekolah.util.PrintingUtils
 import com.junianto.edcsekolah.util.loadAndResizeBitmap
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.data.printable.ImagePrintable
 import com.mazenrashed.printooth.data.printable.Printable
-import com.mazenrashed.printooth.data.printable.RawPrintable
 import com.mazenrashed.printooth.data.printable.TextPrintable
 import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.ui.ScanningActivity
@@ -41,7 +37,6 @@ import com.mazenrashed.printooth.utilities.Printing
 import com.mazenrashed.printooth.utilities.PrintingCallback
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 
 @AndroidEntryPoint
@@ -170,8 +165,7 @@ class SetupFragment : Fragment(), PrintingCallback {
         btnCetak = view.findViewById(R.id.btn_cetak)
         btnCetak.setOnClickListener {
             if (!Printooth.hasPairedPrinter()) {
-                val scanningIntent = Intent(requireContext(), ScanningActivity::class.java)
-                resultLauncher.launch(scanningIntent)
+                A90PrintManager.printReceiptText(requireContext())
             } else {
                 printDetails()
             }

@@ -14,6 +14,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.junianto.edcsekolah.menu.emoney.NfcTapFragment
 import com.junianto.edcsekolah.util.ByteArrayToHexString
+import com.vanstone.appsdk.client.ISdkStatue
+import com.vanstone.l2.Common
+import com.vanstone.l2.CommonCB
+import com.vanstone.trans.api.CommApi
+import com.vanstone.trans.api.SystemApi
+import com.vanstone.utils.ByteUtils
+import com.vanstone.utils.CommonConvert
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
@@ -41,6 +48,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initA90Sdk()
 
         Timber.i("MainActivity created")
 
@@ -82,6 +91,43 @@ class MainActivity : AppCompatActivity() {
                     // TODO: Do something
                 }
             }
+        }
+    }
+
+    private fun initA90Sdk() {
+        val curAppDir = applicationContext.filesDir.absolutePath
+        SystemApi.SystemInit_Api(0, CommonConvert.StringToBytes("$curAppDir/\u0000"), this, object : ISdkStatue {
+            override fun sdkInitSuccessed() {
+                CommApi.InitComm_Api(applicationContext)
+                Common.Init_Api()
+                Common.DbgEN_Api(1)
+
+                Common.setCallback(ccb)
+
+                Timber.i("SDK init successed")
+            }
+
+            override fun sdkInitFailed() {
+                Timber.e("SDK init failed")
+            }
+        })
+    }
+
+    private val ccb = object : CommonCB {
+        override fun GetDateTime(bytes: ByteArray): Int {
+            val dataTimeTemp = ByteArray(10)
+            SystemApi.GetSysTime_Api(dataTimeTemp)
+            ByteUtils.memcpy(bytes, 0, dataTimeTemp, 1, 6)
+            return 0
+        }
+
+        override fun ReadSN(bytes: ByteArray): Int {
+
+            return 0
+        }
+
+        override fun GetUnknowTLV(i: Int, bytes: ByteArray, i1: Int): Int {
+            return -1
         }
     }
 }
