@@ -1,6 +1,8 @@
 package com.junianto.edcsekolah.menu.emoney.a90
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +17,7 @@ class A90NfcTapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        A90ContactlessManager.readCard()
+        A90ContactlessManager.openContactlessCard()
 
         return inflater.inflate(R.layout.fragment_a90_nfc_tap, container, false)
     }

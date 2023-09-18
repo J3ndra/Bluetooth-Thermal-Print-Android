@@ -15,9 +15,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.junianto.edcsekolah.menu.emoney.NfcTapFragment
 import com.junianto.edcsekolah.util.ByteArrayToHexString
 import com.junianto.edcsekolah.util.DeviceInfo
+import com.junianto.edcsekolah.util.GlobalConstants
 import com.vanstone.appsdk.client.ISdkStatue
 import com.vanstone.l2.Common
 import com.vanstone.l2.CommonCB
+import com.vanstone.l2.EMV
+import com.vanstone.l2.PayPass
+import com.vanstone.l2.PayWave
 import com.vanstone.trans.api.CommApi
 import com.vanstone.trans.api.SystemApi
 import com.vanstone.utils.ByteUtils
@@ -113,9 +117,15 @@ class MainActivity : AppCompatActivity() {
         SystemApi.SystemInit_Api(0, CommonConvert.StringToBytes("$curAppDir/\u0000"), this, object : ISdkStatue {
             override fun sdkInitSuccessed() {
                 CommApi.InitComm_Api(applicationContext)
-                Common.Init_Api()
-                Common.DbgEN_Api(1)
 
+                Common.Init_Api()
+                PayPass.Init_Api()
+                PayWave.PayWave_Init_Api()
+
+                EMV.Init_Api()
+                EMV.GetParam_Api(GlobalConstants.stEmvParam)
+
+                Common.DbgEN_Api(1)
                 Common.setCallback(ccb)
 
                 Timber.i("SDK init successed")

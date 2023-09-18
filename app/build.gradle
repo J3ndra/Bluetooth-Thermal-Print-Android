@@ -66,6 +66,10 @@ dependencies {
     implementation files('libs/AppSdkAidl_buildBy_20220217.jar')
     implementation files('libs/vanstoneSdkClient-noemv_20221129.jar')
     implementation files('libs/Common.jar')
+    implementation files('libs/EMV.jar')
+    implementation files('libs/PayPass.jar')
+    implementation files('libs/PayPassGenAAC.jar')
+    implementation files('libs/PayWave.jar')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
