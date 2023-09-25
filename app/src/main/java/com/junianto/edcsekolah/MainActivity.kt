@@ -1,21 +1,15 @@
 package com.junianto.edcsekolah
 
 import android.content.pm.PackageManager
-import android.nfc.NfcAdapter
-import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.junianto.edcsekolah.menu.emoney.NfcTapFragment
-import com.junianto.edcsekolah.util.ByteArrayToHexString
 import com.junianto.edcsekolah.util.DeviceInfo
-import com.junianto.edcsekolah.util.GlobalConstants
 import com.vanstone.appsdk.client.ISdkStatue
 import com.vanstone.l2.Common
 import com.vanstone.l2.CommonCB
@@ -28,7 +22,6 @@ import com.vanstone.utils.ByteUtils
 import com.vanstone.utils.CommonConvert
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -123,7 +116,6 @@ class MainActivity : AppCompatActivity() {
                 PayWave.PayWave_Init_Api()
 
                 EMV.Init_Api()
-                EMV.GetParam_Api(GlobalConstants.stEmvParam)
 
                 Common.DbgEN_Api(1)
                 Common.setCallback(ccb)

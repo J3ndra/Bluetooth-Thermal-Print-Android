@@ -17,7 +17,7 @@ class A90NfcTapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        A90ContactlessManager.openContactlessCard()
+        A90ContactlessManager.readContactlessCard()
 
         return inflater.inflate(R.layout.fragment_a90_nfc_tap, container, false)
     }
