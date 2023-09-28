@@ -31,6 +31,7 @@ class DeleteFragment : Fragment() {
     private lateinit var traceId: String
     private lateinit var amount: String
     private lateinit var cardId: String
+    private var paymentType: Int = 0
 
     private lateinit var tvSchoolName: TextView
     private lateinit var tvSchoolName2: TextView
@@ -122,6 +123,7 @@ class DeleteFragment : Fragment() {
 
             amount = it.amount.toString()
             cardId = it.cardId
+            paymentType = it.paymentType
         }
 
         btnVoid.setOnClickListener {
@@ -129,6 +131,7 @@ class DeleteFragment : Fragment() {
                 putString("trace_id", traceId)
                 putString("amount", amount)
                 putString("card_id", cardId)
+                putInt("payment_type", paymentType)
             })
         }
     }

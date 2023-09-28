@@ -105,7 +105,7 @@ class EMoneySuccessFragment : Fragment() {
             traceId = traceId,
             date = getCurrentDate(),
             time = getCurrentTime(),
-            status = true,
+            paymentType = 2,
             amount = amount,
             cardId = cardId,
             type = "SALE",

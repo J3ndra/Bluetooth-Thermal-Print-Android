@@ -98,5 +98,6 @@
     <string name="text_no_bluetooth_connected">NO BLUETOOTH CONNECTED</string>
     <string name="text_bluetooth_connect">CONNECT</string>
     <string name="text_bluetooth_disconnect">DISCONNECT</string>
+    <string name="silahkan_tempel_kartu_nfc_anda_pada_mesin">Silahkan tempel kartu NFC anda pada mesin</string>
 
 </resources>

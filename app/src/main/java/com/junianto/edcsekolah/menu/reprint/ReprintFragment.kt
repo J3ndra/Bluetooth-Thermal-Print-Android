@@ -73,7 +73,7 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
             receipt.id,
             getCurrentDate(),
             getCurrentTime(),
-            receipt.status,
+            receipt.paymentType,
             receipt.cardId,
             receipt.amount.toString(),
             "SALE",

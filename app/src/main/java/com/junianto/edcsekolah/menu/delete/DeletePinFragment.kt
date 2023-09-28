@@ -38,6 +38,7 @@ class DeletePinFragment : Fragment() {
     private lateinit var traceId: String
     private lateinit var cardId: String
     private lateinit var amount: String
+    private var paymentType: Int = 0
 
     private lateinit var schoolName: String
     private lateinit var majorName: String
@@ -87,6 +88,7 @@ class DeletePinFragment : Fragment() {
             traceId = bundle.getString("trace_id", "") ?: ""
             cardId = bundle.getString("card_id", "") ?: ""
             amount = bundle.getString("amount", "") ?: ""
+            paymentType = bundle.getInt("payment_type", 1)
 
             Timber.d("DELETE PIN FRAGMENT BUNDLE : $traceId, $cardId, $amount")
         }
@@ -239,7 +241,7 @@ class DeletePinFragment : Fragment() {
             traceId = traceId.toInt(),
             date = getCurrentDate(),
             time = getCurrentTime(),
-            status = true,
+            paymentType = paymentType,
             amount = amount,
             cardId = cardId,
             type = "VOID",
@@ -252,6 +254,7 @@ class DeletePinFragment : Fragment() {
             putString("trace_id", traceId)
             putString("card_id", cardId)
             putString("amount", amount)
+            putInt("payment_type", paymentType)
         })
     }
 }

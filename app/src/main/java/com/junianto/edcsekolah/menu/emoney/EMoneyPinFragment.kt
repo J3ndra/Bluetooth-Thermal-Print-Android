@@ -231,7 +231,7 @@ class EMoneyPinFragment : Fragment() {
             amount.toInt(),
             getCurrentDateTime(),
             cardId,
-            true
+            2
         )
 
         eMoneyViewModel.insertReceipt(receipt) { insertedId ->
@@ -243,7 +243,7 @@ class EMoneyPinFragment : Fragment() {
                 traceId = insertedId.toInt(),
                 date = getCurrentDate(),
                 time = getCurrentTime(),
-                status = true,
+                paymentType = 2,
                 amount = amount,
                 cardId = cardId,
                 type = "SALE",

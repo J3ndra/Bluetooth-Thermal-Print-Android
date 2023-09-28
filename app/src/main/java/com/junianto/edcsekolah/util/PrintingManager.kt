@@ -18,7 +18,7 @@ object PrintingManager {
         traceId: Int,
         date: String,
         time: String,
-        status: Boolean,
+        paymentType: Int,
         cardId: String,
         amount: String,
         type: String,
@@ -113,8 +113,16 @@ object PrintingManager {
             .setAlignment(DefaultPrinter.ALIGNMENT_LEFT)
             .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
             .build()
+        var paymentText = ""
+        when (paymentType) {
+            1 -> paymentText = "CASH"
+            2 -> paymentText = "NFC"
+            3 -> paymentText = "QR"
+            4 -> paymentText = "IC"
+            5 -> paymentText = "MAGNETIC"
+        }
         val statusText = TextPrintable.Builder()
-            .setText("STATUS : ${if (status) "PAID" else "SETTLED"}\n")
+            .setText("STATUS : $paymentText\n")
             .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
             .setAlignment(DefaultPrinter.ALIGNMENT_LEFT)
             .setFontSize(DefaultPrinter.FONT_SIZE_LARGE)

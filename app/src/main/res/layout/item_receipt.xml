@@ -31,7 +31,7 @@
             android:id="@+id/tv_receipt_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="STATUS : PAID"
+            android:text="PAYMENT TYPE : "
             android:textSize="12sp"
             android:textAppearance="?android:textAppearanceMedium" />
     </LinearLayout>

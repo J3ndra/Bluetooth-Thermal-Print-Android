@@ -129,7 +129,9 @@ class EMoneyEnterPriceFragment : Fragment() {
                         putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
                     })
                 } else {
-                    findNavController().navigate(R.id.action_EMoneyEnterPriceFragment_to_a90NfcTapFragment)
+                    findNavController().navigate(R.id.action_EMoneyEnterPriceFragment_to_a90NfcTapFragment, Bundle().apply {
+                        putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
+                    })
                 }
             } else {
                 AlertDialog.Builder(requireContext())

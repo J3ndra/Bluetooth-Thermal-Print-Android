@@ -68,7 +68,7 @@ class NfcTapFragment : Fragment(), NfcAdapter.ReaderCallback {
 
         // Set amount
         tvNfcAmount.text = buildString {
-            append("Total yang harus dibayar: ")
+            append("Total yang harus dibayar adalah ")
             append(formatAmount(amount))
         }
 

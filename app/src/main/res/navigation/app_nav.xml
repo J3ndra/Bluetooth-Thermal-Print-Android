@@ -218,5 +218,12 @@
         android:id="@+id/a90NfcTapFragment"
         android:name="com.junianto.edcsekolah.menu.emoney.a90.A90NfcTapFragment"
         android:label="fragment_a90_nfc_tap"
-        tools:layout="@layout/fragment_a90_nfc_tap" />
+        tools:layout="@layout/fragment_a90_nfc_tap" >
+        <action
+            android:id="@+id/action_a90NfcTapFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_a90NfcTapFragment_to_EMoneyPinFragment"
+            app:destination="@id/EMoneyPinFragment" />
+    </fragment>
 </navigation>

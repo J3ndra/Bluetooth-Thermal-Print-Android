@@ -19,6 +19,6 @@ data class Receipt(
     @ColumnInfo(name = "card_id")
     val cardId: String,
 
-    @ColumnInfo(name = "status")
-    val status: Boolean,
+    @ColumnInfo(name = "paymentType")
+    val paymentType: Int, // 1 = CASH, 2 = NFC, 3 = QR, 4 = IC, 5 = MAGNETIC
 )

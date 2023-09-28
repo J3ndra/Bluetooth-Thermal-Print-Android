@@ -29,6 +29,8 @@ class DeleteSuccessFragment : Fragment() {
     private lateinit var cardId: String
     private lateinit var amount: String
     private lateinit var traceId: String
+    private var paymentType: Int = 0
+
     private lateinit var schoolName: String
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
@@ -51,8 +53,9 @@ class DeleteSuccessFragment : Fragment() {
             cardId = bundle.getString("card_id", "") ?: ""
             amount = bundle.getString("amount", "") ?: ""
             traceId = bundle.getString("trace_id", "") ?: ""
+            paymentType = bundle.getInt("payment_type", 1)
 
-            Timber.d("DELETE SUCCESS FRAGMENT : $cardId, $amount, $traceId")
+            Timber.d("DELETE SUCCESS FRAGMENT : $cardId, $amount, $traceId, $paymentType")
         }
 
         // HANDLE APP VIEWMODEL
@@ -105,7 +108,7 @@ class DeleteSuccessFragment : Fragment() {
             traceId = traceId.toInt(),
             date = getCurrentDate(),
             time = getCurrentTime(),
-            status = true,
+            paymentType = paymentType,
             amount = amount,
             cardId = cardId,
             type = "VOID",

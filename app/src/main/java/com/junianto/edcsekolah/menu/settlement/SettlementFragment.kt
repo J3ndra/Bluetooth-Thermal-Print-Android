@@ -223,8 +223,17 @@ class SettlementFragment : Fragment() {
                 .setAlignment(DefaultPrinter.ALIGNMENT_LEFT)
                 .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
                 .build()
-            val statusText = TextPrintable.Builder()
-                .setText("STATUS : ${if (receipts[i].status) "PAID" else "SETTLED"}\n")
+
+            var typeText = ""
+            when (receipts[i].paymentType) {
+                1 -> typeText = "CASH"
+                2 -> typeText = "NFC"
+                3 -> typeText = "QR"
+                4 -> typeText = "IC"
+                5 -> typeText = "MAGNETIC"
+            }
+            val paymentTypeText = TextPrintable.Builder()
+                .setText("TYPE : $typeText\n")
                 .setAlignment(DefaultPrinter.ALIGNMENT_LEFT)
                 .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
                 .build()
@@ -236,7 +245,7 @@ class SettlementFragment : Fragment() {
             printables.add(oneLinedText)
             printables.add(traceIdText)
             printables.add(dateText)
-//            printables.add(statusText)
+            printables.add(paymentTypeText)
             printables.add(amountText)
         }
         printables.add(linedText)

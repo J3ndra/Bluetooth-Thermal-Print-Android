@@ -102,7 +102,7 @@ class CashSuccessFragment : Fragment() {
             traceId = traceId,
             date = getCurrentDate(),
             time = getCurrentTime(),
-            status = true,
+            paymentType = 1,
             amount = amount,
             cardId = cardId,
             type = "SALE",

@@ -44,10 +44,17 @@ class SettlementAdapter : RecyclerView.Adapter<SettlementAdapter.ViewHolder>() {
 
         @SuppressLint("SetTextI18n")
         fun bind(receipt: Receipt) {
-            val statusText = if (receipt.status) "PAID" else "SETTLED"
+            var typeText = ""
+            when (receipt.paymentType) {
+                1 -> typeText = "CASH"
+                2 -> typeText = "NFC"
+                3 -> typeText = "QR"
+                4 -> typeText = "IC"
+                5 -> typeText = "MAGNETIC"
+            }
 
             tvReceiptId.text = "TRACE NO : ${receipt.id}"
-            tvReceiptStatus.text = "STATUS : $statusText"
+            tvReceiptStatus.text = "STATUS : $typeText"
             tvReceiptAmount.text = formatAmount(receipt.amount.toString())
             tvReceiptDate.text = receipt.date
         }

@@ -15,7 +15,6 @@ object A90ContactlessManager {
 
     private var slottedCard: Boolean = true
 
-
     fun turnOnLed() {
         LcdApi.LedLightOff_Api(0x0F)
         LcdApi.LedLightOn_Api(0x01)
@@ -27,7 +26,7 @@ object A90ContactlessManager {
         SystemApi.Beep_Api(0)
     }
 
-    fun readContactlessCard() {
+    fun openContactlessCard() {
         // Close PiccAPi & Turn off led
         PiccApi.PiccClose_Api()
         turnOffLed()
@@ -42,25 +41,13 @@ object A90ContactlessManager {
             Timber.e("PiccOpen_Api failed to open")
             slottedCard = false
         }
+
         Timber.i("PiccOpen_Api success")
+    }
 
-        object : Thread() {
-            override fun run() {
-                super.run()
-                while (slottedCard) {
-                    var timerId = 0
-                    timerId = SystemApi.TimerSet_Api()
-                    val cardType = ByteArray(2)
-                    val serialNo = ByteArray(20)
-
-                    while (SystemApi.TimerCheck_Api(timerId, 20 * 1000) == 0) {
-                        val aret = PiccApi.PiccCheck_Api(0, cardType, serialNo)
-                        Timber.i("PiccCheck_Api: $aret")
-
-                        slottedCard = false
-                    }
-                }
-            }
-        }.start()
+    fun closeContactlessCard() {
+        // Close PiccApi & Turn off led
+        PiccApi.PiccClose_Api()
+        turnOffLed()
     }
 }

@@ -229,7 +229,7 @@ class CashEnterPinFragment : Fragment() {
             amount.toInt(),
             getCurrentDateTime(),
             cardId,
-            true
+            1
         )
 
         saleViewModel.insertReceipt(receipt) { insertedId ->
@@ -241,7 +241,7 @@ class CashEnterPinFragment : Fragment() {
                 traceId = insertedId.toInt(),
                 date = getCurrentDate(),
                 time = getCurrentTime(),
-                status = true,
+                paymentType = 1,
                 amount = amount,
                 cardId = cardId,
                 type = "SALE",
