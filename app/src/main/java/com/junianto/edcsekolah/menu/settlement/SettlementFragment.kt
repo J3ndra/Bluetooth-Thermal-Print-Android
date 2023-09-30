@@ -1,9 +1,7 @@
 package com.junianto.edcsekolah.menu.settlement
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,7 +22,6 @@ import com.junianto.edcsekolah.menu.settlement.adapter.SettlementAdapter
 import com.junianto.edcsekolah.menu.settlement.viewmodel.SettlementViewModel
 import com.junianto.edcsekolah.util.formatAmount
 import com.junianto.edcsekolah.util.loadAndResizeBitmap
-import com.junianto.edcsekolah.util.resizeDrawableToBitmap
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.data.printable.ImagePrintable
 import com.mazenrashed.printooth.data.printable.Printable
@@ -34,7 +30,6 @@ import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.ui.ScanningActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class SettlementFragment : Fragment() {

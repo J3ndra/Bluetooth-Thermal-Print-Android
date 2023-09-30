@@ -2,6 +2,7 @@ package com.junianto.edcsekolah.util
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.junianto.edcsekolah.R
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.data.printable.ImagePrintable
@@ -23,15 +24,22 @@ object PrintingManager {
         amount: String,
         type: String,
         reprint: Boolean,
+        isImagePrint: Boolean,
     ) {
         val printables = ArrayList<Printable>()
 
-        val tutWuriLogo = loadAndResizeBitmap(context, schoolLogo)?.let {
+        val appLogo = loadAndResizeBitmap(context, schoolLogo)?.let {
             ImagePrintable.Builder(it)
                 .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
                 .setNewLinesAfter(1)
                 .build()
         }
+        val tutWuriBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.tut_wuri_logo_2)
+        val tutWuriLogo = ImagePrintable.Builder(tutWuriBitmap)
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .setNewLinesAfter(1)
+            .build()
+
         val smkText = TextPrintable.Builder()
             .setText("SMK\n")
             .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
@@ -167,7 +175,13 @@ object PrintingManager {
             .setNewLinesAfter(3)
             .build()
 
-        if (tutWuriLogo != null) {
+        if (schoolLogo != "") {
+            if (isImagePrint) {
+                if (appLogo != null) {
+                    printables.add(appLogo)
+                }
+            }
+        } else {
             printables.add(tutWuriLogo)
         }
         printables.add(smkText)

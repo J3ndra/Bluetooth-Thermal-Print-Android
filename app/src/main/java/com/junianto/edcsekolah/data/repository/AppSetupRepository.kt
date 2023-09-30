@@ -30,7 +30,7 @@ class DataStoreAppSetupRepository @Inject constructor(context: Context) : AppSet
             val schoolAddress = preferences[APP_SCHOOL_ADDRESS_KEY] ?: "Jalan Simpang Lima, Kota Semarang"
             val majorName = preferences[APP_MAJOR_NAME_KEY] ?: "Bisnis dan Manajemen"
             val schoolLogo = preferences[APP_SCHOOL_LOGO] ?: ""
-            val isImagePrinted = preferences[IS_IMAGE_PRINTED] ?: false
+            val isImagePrinted = preferences[IS_IMAGE_PRINTED] ?: true
 
             AppSetup(schoolName, schoolAddress, majorName, schoolLogo, isImagePrinted)
         }

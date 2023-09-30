@@ -17,9 +17,9 @@ class AppViewModel @Inject constructor(private val appSetupRepository: AppSetupR
 
     val appSetup: LiveData<AppSetup> = appSetupRepository.getAppSetup().asLiveData()
 
-    fun updateAppSetup(schoolName: String, schoolAddress: String, majorName: String, schoolLogo: String) {
+    fun updateAppSetup(schoolName: String, schoolAddress: String, majorName: String, schoolLogo: String, isImagePrinted: Boolean) {
         viewModelScope.launch {
-            appSetupRepository.updateAppSetup(schoolName, schoolAddress, majorName, schoolLogo)
+            appSetupRepository.updateAppSetup(schoolName, schoolAddress, majorName, schoolLogo, isImagePrinted)
         }
     }
 }
