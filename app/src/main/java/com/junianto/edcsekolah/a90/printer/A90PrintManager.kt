@@ -7,7 +7,21 @@ import timber.log.Timber
 
 object A90PrintManager {
 
-    fun printReceiptSuccess(context: Context) {
+    fun printReceiptSuccess(
+        context: Context,
+        schoolLogo: String,
+        schoolName: String,
+        majorName: String,
+        traceId: Int,
+        date: String,
+        time: String,
+        paymentType: Int,
+        cardId: String,
+        amount: String,
+        type: String,
+        reprint: Boolean,
+        isImagePrint: Boolean,
+    ) {
         PrinterApi.PrnOpen_Api("Print Receipt", context)
         PrinterApi.PrnClrBuff_Api()
         PrinterApi.PrnLineSpaceSet_Api(5.toShort(), 0x00)
