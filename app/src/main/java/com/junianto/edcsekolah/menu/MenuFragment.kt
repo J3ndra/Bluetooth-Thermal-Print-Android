@@ -69,13 +69,7 @@ class MenuFragment : Fragment() {
                             .show()
                     }
                     "QRIS" -> {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Coming Soon")
-                            .setMessage("Fitur ini akan segera hadir")
-                            .setPositiveButton("OK") { dialog, _ ->
-                                dialog.dismiss()
-                            }
-                            .show()
+                        findNavController().navigate(R.id.action_menuFragment_to_qrisEnterAmountFragment)
                     }
                 }
             }

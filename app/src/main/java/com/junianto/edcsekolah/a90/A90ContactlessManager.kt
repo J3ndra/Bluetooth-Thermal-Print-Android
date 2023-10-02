@@ -1,14 +1,8 @@
-package com.junianto.edcsekolah.a90.printer
+package com.junianto.edcsekolah.a90
 
-import android.util.Log
-import com.vanstone.l2.Common
-import com.vanstone.trans.api.IcApi
 import com.vanstone.trans.api.LcdApi
-import com.vanstone.trans.api.MagCardApi
 import com.vanstone.trans.api.PiccApi
 import com.vanstone.trans.api.SystemApi
-import com.vanstone.utils.ByteUtils
-import com.vanstone.utils.CommonConvert
 import timber.log.Timber
 
 object A90ContactlessManager {

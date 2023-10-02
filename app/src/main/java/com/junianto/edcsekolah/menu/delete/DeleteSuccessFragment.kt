@@ -34,6 +34,7 @@ class DeleteSuccessFragment : Fragment() {
     private lateinit var schoolName: String
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
+    private var isImagePrinted = false
 
     private lateinit var tvPaymentDesc: TextView
     private lateinit var btnReprintReceipt: Button
@@ -63,6 +64,7 @@ class DeleteSuccessFragment : Fragment() {
             schoolName = it.school_name
             majorName = it.major_name
             schoolLogo = it.school_logo
+            isImagePrinted = it.is_image_printed
         }
 
         tvPaymentDesc = rootView.findViewById(R.id.tv_payment_desc)
@@ -113,6 +115,7 @@ class DeleteSuccessFragment : Fragment() {
             cardId = cardId,
             type = "VOID",
             reprint = true,
+            isImagePrint = isImagePrinted
         )
 
         findNavController().navigate(R.id.action_deleteSuccessFragment_to_appFragment)

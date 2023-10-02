@@ -43,6 +43,7 @@ class DeletePinFragment : Fragment() {
     private lateinit var schoolName: String
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
+    private var isImagePrinted = false
 
     // EDIT TEXT
     private lateinit var etPin1: EditText
@@ -138,6 +139,8 @@ class DeletePinFragment : Fragment() {
             } else {
                 ivSchoolLogo.setImageURI(Uri.parse(it.school_logo))
             }
+
+            isImagePrinted = it.is_image_printed
         }
 
         return rootView
@@ -246,6 +249,7 @@ class DeletePinFragment : Fragment() {
             cardId = cardId,
             type = "VOID",
             reprint = false,
+            isImagePrint = isImagePrinted
         )
 
         voidViewModel.deleteReceiptById(traceId.toInt())

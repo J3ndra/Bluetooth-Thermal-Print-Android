@@ -35,6 +35,7 @@ class EMoneySuccessFragment : Fragment() {
     private lateinit var schoolName: String
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
+    private var isImagePrinted = false
 
     private lateinit var tvPaymentDesc: TextView
     private lateinit var btnReprintReceipt: Button
@@ -63,6 +64,7 @@ class EMoneySuccessFragment : Fragment() {
             schoolName = it.school_name
             majorName = it.major_name
             schoolLogo = it.school_logo
+            isImagePrinted = it.is_image_printed
         }
 
         return rootView
@@ -110,6 +112,7 @@ class EMoneySuccessFragment : Fragment() {
             cardId = cardId,
             type = "SALE",
             reprint = true,
+            isImagePrint = isImagePrinted
         )
 
         findNavController().navigate(R.id.action_EMoneySuccessFragment_to_appFragment)

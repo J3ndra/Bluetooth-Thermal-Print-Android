@@ -100,5 +100,8 @@
     <string name="text_bluetooth_disconnect">DISCONNECT</string>
     <string name="silahkan_tempel_kartu_nfc_anda_pada_mesin">Silahkan tempel kartu NFC anda pada mesin</string>
     <string name="print_logo">Print Logo</string>
+    <string name="textview">TextView</string>
+    <string name="qris">QRIS</string>
+    <string name="next">next</string>
 
 </resources>

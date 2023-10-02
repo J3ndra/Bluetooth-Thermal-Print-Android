@@ -34,6 +34,7 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
     private lateinit var schoolName: String
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
+    private var isImagePrinted = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +59,7 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
             schoolName = appSetup.school_name
             majorName = appSetup.major_name
             schoolLogo = appSetup.school_logo
+            isImagePrinted = appSetup.is_image_printed
         }
 
         return rootView
@@ -78,6 +80,7 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
             receipt.amount.toString(),
             "SALE",
             true,
+            isImagePrinted
         )
     }
 }

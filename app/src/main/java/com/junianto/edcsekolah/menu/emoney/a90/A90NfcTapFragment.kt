@@ -12,10 +12,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.R
-import com.junianto.edcsekolah.a90.printer.A90ContactlessManager
+import com.junianto.edcsekolah.a90.A90ContactlessManager
 import com.junianto.edcsekolah.util.formatAmount
 import com.vanstone.trans.api.PiccApi
-import com.vanstone.trans.api.SystemApi
 import timber.log.Timber
 
 class A90NfcTapFragment : Fragment() {

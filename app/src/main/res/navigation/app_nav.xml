@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_menuFragment_to_saleFragment"
             app:destination="@id/saleFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_qrisEnterAmountFragment"
+            app:destination="@id/qrisEnterAmountFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -225,5 +228,32 @@
         <action
             android:id="@+id/action_a90NfcTapFragment_to_EMoneyPinFragment"
             app:destination="@id/EMoneyPinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrisEnterAmountFragment"
+        android:name="com.junianto.edcsekolah.menu.qris.QrisEnterAmountFragment"
+        android:label="fragment_qris_enter_amount"
+        tools:layout="@layout/fragment_qris_enter_amount" >
+        <action
+            android:id="@+id/action_qrisEnterAmountFragment_to_qrisDetailFragment"
+            app:destination="@id/qrisDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrisDetailFragment"
+        android:name="com.junianto.edcsekolah.menu.qris.QrisDetailFragment"
+        android:label="fragment_qris_detail"
+        tools:layout="@layout/fragment_qris_detail" >
+        <action
+            android:id="@+id/action_qrisDetailFragment_to_qrisSuccessFragment"
+            app:destination="@id/qrisSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrisSuccessFragment"
+        android:name="com.junianto.edcsekolah.menu.qris.QrisSuccessFragment"
+        android:label="fragment_qris_success"
+        tools:layout="@layout/fragment_qris_success" >
+        <action
+            android:id="@+id/action_qrisSuccessFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
     </fragment>
 </navigation>

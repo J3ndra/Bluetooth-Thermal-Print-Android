@@ -40,6 +40,7 @@ class EMoneyPinFragment : Fragment() {
     private lateinit var schoolName: String
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
+    private var isImagePrinted = false
 
     // EDIT TEXT
     private lateinit var etPin1: EditText
@@ -130,6 +131,8 @@ class EMoneyPinFragment : Fragment() {
             } else {
                 ivSchoolLogo.setImageURI(Uri.parse(it.school_logo))
             }
+
+            isImagePrinted = it.is_image_printed
         }
 
         return rootView
@@ -248,6 +251,7 @@ class EMoneyPinFragment : Fragment() {
                 cardId = cardId,
                 type = "SALE",
                 reprint = false,
+                isImagePrint = isImagePrinted
             )
 
             requireActivity().runOnUiThread {
