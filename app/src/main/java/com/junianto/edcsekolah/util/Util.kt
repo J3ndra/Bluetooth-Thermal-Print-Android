@@ -1,10 +1,15 @@
 package com.junianto.edcsekolah.util
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import java.io.ByteArrayOutputStream
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -60,4 +65,22 @@ fun generateQRCode(content: String): Bitmap? {
         e.printStackTrace()
     }
     return null
+}
+
+fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+    val stream = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+    return stream.toByteArray()
+}
+
+fun drawableToByteArray(context: Context, drawableResId: Int): ByteArray {
+    val drawable = ContextCompat.getDrawable(context, drawableResId)
+    if (drawable is BitmapDrawable) {
+        val bitmap = drawable.bitmap
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        return stream.toByteArray()
+    }
+    // Handle other types of Drawables if needed
+    throw IllegalArgumentException("Unsupported Drawable type")
 }

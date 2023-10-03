@@ -34,11 +34,6 @@ object PrintingManager {
                 .setNewLinesAfter(1)
                 .build()
         }
-        val tutWuriBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.tut_wuri_logo_2)
-        val tutWuriLogo = ImagePrintable.Builder(tutWuriBitmap)
-            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
-            .setNewLinesAfter(1)
-            .build()
 
         val smkText = TextPrintable.Builder()
             .setText("SMK\n")
@@ -175,14 +170,10 @@ object PrintingManager {
             .setNewLinesAfter(3)
             .build()
 
-        if (schoolLogo != "") {
-            if (isImagePrint) {
-                if (appLogo != null) {
-                    printables.add(appLogo)
-                }
+        if (isImagePrint) {
+            if (appLogo != null) {
+                printables.add(appLogo)
             }
-        } else {
-            printables.add(tutWuriLogo)
         }
         printables.add(smkText)
         printables.add(majorText)

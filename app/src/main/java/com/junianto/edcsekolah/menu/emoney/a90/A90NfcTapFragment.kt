@@ -65,19 +65,8 @@ class A90NfcTapFragment : Fragment() {
         // Start update progress bar
         handler.postDelayed(updateRunnable, 1000)
 
-        activity?.runOnUiThread {
-            val aret = PiccApi.PiccCheck_Api(0, ByteArray(2), ByteArray(20))
-            Timber.i("PiccCheck_Api: $aret")
-
-            if (aret == 0) {
-                Toast.makeText(requireContext(), "Kartu terdeteksi", Toast.LENGTH_SHORT).show()
-
-                findNavController().navigate(R.id.action_a90NfcTapFragment_to_EMoneyPinFragment, Bundle().apply {
-                    putString("cardId", "1234567890")
-                    putString("amount", amount)
-                })
-            }
-        }
+        // Schedule the PiccCheck_Api to run periodically
+        handler.postDelayed(piccCheckRunnable, 0)
     }
 
     private val updateRunnable = object : Runnable {
@@ -91,6 +80,27 @@ class A90NfcTapFragment : Fragment() {
                 handler.removeCallbacks(this)
                 findNavController().navigate(R.id.action_a90NfcTapFragment_to_menuFragment)
             }
+        }
+    }
+
+    private val piccCheckRunnable = object : Runnable {
+        override fun run() {
+            val aret = PiccApi.PiccCheck_Api(0, ByteArray(2), ByteArray(20))
+            Timber.i("PiccCheck_Api: $aret")
+
+            if (aret == 0) {
+                activity?.runOnUiThread {
+                    Toast.makeText(requireContext(), "Kartu terdeteksi", Toast.LENGTH_SHORT).show()
+
+                    findNavController().navigate(R.id.action_a90NfcTapFragment_to_EMoneyPinFragment, Bundle().apply {
+                        putString("cardId", "1234567890")
+                        putString("amount", amount)
+                    })
+                }
+            }
+
+            // Repeat the task every 1000 milliseconds (1 second)
+            handler.postDelayed(this, 1000)
         }
     }
 

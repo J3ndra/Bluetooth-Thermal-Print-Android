@@ -1,6 +1,10 @@
 package com.junianto.edcsekolah.a90.printer
 
 import android.content.Context
+import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.util.bitmapToByteArray
+import com.junianto.edcsekolah.util.drawableToByteArray
+import com.junianto.edcsekolah.util.loadAndResizeBitmap
 import com.vanstone.trans.api.PrinterApi
 import com.vanstone.trans.api.SystemApi
 import timber.log.Timber
@@ -22,9 +26,35 @@ object A90PrintManager {
         reprint: Boolean,
         isImagePrint: Boolean,
     ) {
-        PrinterApi.PrnOpen_Api("Print Receipt", context)
         PrinterApi.PrnClrBuff_Api()
-        PrinterApi.PrnLineSpaceSet_Api(5.toShort(), 0x00)
+        PrinterApi.printSetAlign_Api(1)
+        PrinterApi.printSetTextSize_Api(36)
+        PrinterApi.PrnSetGray_Api(10)
+        PrinterApi.printSetBlodText_Api(true)
+        if (isImagePrint) {
+            if (schoolLogo == "") {
+                PrinterApi.printAddImage_Api(
+                    0x07,
+                    256,
+                    256,
+                    drawableToByteArray(
+                        context,
+                        R.drawable.tut_wuri_logo_2
+                    )
+                )
+            }
+        }
+        PrinterApi.PrnStr_Api("SMK")
+        PrinterApi.printSetTextSize_Api(24)
+        PrinterApi.printSetBlodText_Api(false)
+        PrinterApi.PrnStr_Api(majorName)
+        PrinterApi.printSetTextSize_Api(36)
+        PrinterApi.printSetBlodText_Api(true)
+        PrinterApi.PrnStr_Api(schoolName)
+
+        PrinterApi.PrnStr_Api("\n\n\n")
+        printData()
+        PrinterApi.PrnCut_Api()
     }
 
     fun printReceiptText(context: Context) {

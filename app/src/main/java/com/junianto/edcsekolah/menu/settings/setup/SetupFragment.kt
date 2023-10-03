@@ -126,10 +126,40 @@ class SetupFragment : Fragment(), PrintingCallback {
             if (!Printooth.hasPairedPrinter()) {
                 when (cpuArchitecture) {
                     "armeabi" -> {
-                        A90PrintManager.printReceiptText(requireContext())
+//                        A90PrintManager.printReceiptText(requireContext())
+                        A90PrintManager.printReceiptSuccess(
+                            requireContext(),
+                            schoolLogo,
+                            etSchoolName.text.toString(),
+                            etMajorName.text.toString(),
+                            123456,
+                            "12/12/2021",
+                            "12:12:12",
+                            1,
+                            "1234567890",
+                            "Rp. 100.000",
+                            "Pembayaran SPP",
+                            reprint = false,
+                            isImagePrint = true,
+                        )
                     }
                     "armeabi-v7a" -> {
-                        A90PrintManager.printReceiptText(requireContext())
+//                        A90PrintManager.printReceiptText(requireContext())
+                        A90PrintManager.printReceiptSuccess(
+                            requireContext(),
+                            schoolLogo,
+                            etSchoolName.text.toString(),
+                            etMajorName.text.toString(),
+                            123456,
+                            "12/12/2021",
+                            "12:12:12",
+                            1,
+                            "1234567890",
+                            "Rp. 100.000",
+                            "Pembayaran SPP",
+                            reprint = false,
+                            isImagePrint = true,
+                        )
                     }
                     else -> {
                         Toast.makeText(requireContext(), "Please connect the thermal printer in setting.", Toast.LENGTH_LONG).show()
