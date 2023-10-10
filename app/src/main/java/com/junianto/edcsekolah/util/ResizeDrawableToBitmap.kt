@@ -31,10 +31,14 @@ fun loadAndResizeBitmap(context: Context, schoolLogo: String): Bitmap? {
         bitmap = resizeDrawableToBitmap(context, R.drawable.tut_wuri_logo_2, 256)
     } else {
         try {
+            val options = BitmapFactory.Options().apply {
+                inSampleSize = 3
+            }
+
             bitmap = ImageSaver(context)
                 .setFileName("school_logo.png")
                 .setDirectoryName("images")
-                .load()
+                .load(options)
 
             // Resize the loaded bitmap to 256x256
             if (bitmap != null) {
@@ -46,34 +50,6 @@ fun loadAndResizeBitmap(context: Context, schoolLogo: String): Bitmap? {
     }
 
     return bitmap
-}
-
-fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
-    try {
-        val parcelFileDescriptor: ParcelFileDescriptor? = context.contentResolver.openFileDescriptor(uri, "r")
-        val fileDescriptor: FileDescriptor? = parcelFileDescriptor?.fileDescriptor
-        val image: Bitmap? = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-        parcelFileDescriptor?.close()
-        return image
-    } catch (e: IOException) {
-        e.printStackTrace()
-    }
-    return null
-}
-
-
-fun toGrayscale(srcImage: Bitmap): Bitmap {
-    val bmpGrayscale = Bitmap.createBitmap(srcImage.width, srcImage.height, Bitmap.Config.ARGB_8888)
-
-    val canvas = Canvas(bmpGrayscale)
-    val paint = Paint()
-
-    val cm = ColorMatrix()
-    cm.setSaturation(0f)
-    paint.colorFilter = ColorMatrixColorFilter(cm)
-    canvas.drawBitmap(srcImage, 0f, 0f, paint)
-
-    return bmpGrayscale
 }
 
 fun resizeDrawableToBitmap(context: Context, drawableResId: Int, targetSize: Int): Bitmap {

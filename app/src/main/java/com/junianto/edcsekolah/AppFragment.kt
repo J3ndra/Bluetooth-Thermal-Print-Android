@@ -1,6 +1,7 @@
 package com.junianto.edcsekolah
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -66,10 +67,14 @@ class AppFragment : Fragment() {
             if (schoolLogo == "") {
                 ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
             } else {
+                val option = BitmapFactory.Options().apply {
+                    inSampleSize = 1
+                }
+
                 val bitmap: Bitmap? = ImageSaver(requireContext())
                     .setFileName("school_logo.png")
                     .setDirectoryName("images")
-                    .load()
+                    .load(option)
 
                 ivSchoolLogo.setImageBitmap(bitmap)
 

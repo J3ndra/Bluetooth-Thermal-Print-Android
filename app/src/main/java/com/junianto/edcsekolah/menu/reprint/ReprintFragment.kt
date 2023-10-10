@@ -5,18 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.a90.printer.A90PrintManager
 import com.junianto.edcsekolah.data.model.Receipt
 import com.junianto.edcsekolah.menu.reprint.adapter.ReprintAdapter
 import com.junianto.edcsekolah.menu.reprint.adapter.ReprintButtonClickListener
 import com.junianto.edcsekolah.menu.reprint.viewmodel.ReprintViewModel
+import com.junianto.edcsekolah.util.DeviceInfo
 import com.junianto.edcsekolah.util.PrintingManager
 import com.junianto.edcsekolah.util.getCurrentDate
 import com.junianto.edcsekolah.util.getCurrentTime
+import com.mazenrashed.printooth.Printooth
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -33,7 +37,7 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
 
     private lateinit var schoolName: String
     private lateinit var majorName: String
-    private lateinit var schoolLogo: String
+    private var schoolLogo: String = ""
     private var isImagePrinted = false
 
     override fun onCreateView(
@@ -66,21 +70,62 @@ class ReprintFragment : Fragment(), ReprintButtonClickListener {
     }
 
     override fun onReprintButtonClick(receipt: Receipt) {
-        Timber.d("REPRINT FROM FRAGMENT : ${receipt.id}")
-        PrintingManager.printManager(
-            requireContext(),
-            schoolLogo,
-            schoolName,
-            majorName,
-            receipt.id,
-            getCurrentDate(),
-            getCurrentTime(),
-            receipt.paymentType,
-            receipt.cardId,
-            receipt.amount.toString(),
-            "SALE",
-            true,
-            isImagePrinted
-        )
+        if (!Printooth.hasPairedPrinter()) {
+            when (DeviceInfo.getCpuArchitecture()) {
+                "armeabi" -> {
+                    A90PrintManager.printReceiptSuccess(
+                        requireContext(),
+                        schoolLogo,
+                        schoolName,
+                        majorName,
+                        receipt.id,
+                        getCurrentDate(),
+                        getCurrentTime(),
+                        receipt.paymentType,
+                        receipt.cardId,
+                        receipt.amount.toString(),
+                        "SALE",
+                        true,
+                        isImagePrinted
+                    )
+                }
+                "armeabi-v7a" -> {
+                    A90PrintManager.printReceiptSuccess(
+                        requireContext(),
+                        schoolLogo,
+                        schoolName,
+                        majorName,
+                        receipt.id,
+                        getCurrentDate(),
+                        getCurrentTime(),
+                        receipt.paymentType,
+                        receipt.cardId,
+                        receipt.amount.toString(),
+                        "SALE",
+                        true,
+                        isImagePrinted
+                    )
+                }
+                else -> {
+                    Toast.makeText(requireContext(), "Please connect the thermal printer in setting.", Toast.LENGTH_LONG).show()
+                }
+            }
+        } else {
+            PrintingManager.printManager(
+                requireContext(),
+                schoolLogo,
+                schoolName,
+                majorName,
+                receipt.id,
+                getCurrentDate(),
+                getCurrentTime(),
+                receipt.paymentType,
+                receipt.cardId,
+                receipt.amount.toString(),
+                "SALE",
+                true,
+                isImagePrinted
+            )
+        }
     }
 }

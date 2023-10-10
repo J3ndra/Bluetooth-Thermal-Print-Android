@@ -3,7 +3,6 @@ package com.junianto.edcsekolah.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat

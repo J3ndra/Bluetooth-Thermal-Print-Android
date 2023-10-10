@@ -15,6 +15,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.a90.printer.A90PrintManager
+import com.junianto.edcsekolah.util.DeviceInfo
 import com.junianto.edcsekolah.util.PrintingManager
 import com.junianto.edcsekolah.util.formatAmount
 import com.junianto.edcsekolah.util.getCurrentDate
@@ -82,12 +84,7 @@ class EMoneySuccessFragment : Fragment() {
         }
 
         btnReprintReceipt.setOnClickListener {
-            if (!Printooth.hasPairedPrinter()) {
-                val scanningIntent = Intent(requireContext(), ScanningActivity::class.java)
-                resultLauncher.launch(scanningIntent)
-            } else {
-                printReceipt()
-            }
+            printReceipt()
         }
     }
 
@@ -99,22 +96,68 @@ class EMoneySuccessFragment : Fragment() {
     }
 
     private fun printReceipt() {
-        PrintingManager.printManager(
-            context = requireContext(),
-            schoolLogo = schoolLogo,
-            schoolName = schoolName,
-            majorName = majorName,
-            traceId = traceId,
-            date = getCurrentDate(),
-            time = getCurrentTime(),
-            paymentType = 2,
-            amount = amount,
-            cardId = cardId,
-            type = "SALE",
-            reprint = true,
-            isImagePrint = isImagePrinted
-        )
+        if (!Printooth.hasPairedPrinter()) {
+            when (DeviceInfo.getCpuArchitecture()) {
+                "armeabi" -> {
+                    A90PrintManager.printReceiptSuccess(
+                        requireContext(),
+                        schoolLogo,
+                        schoolName,
+                        majorName,
+                        traceId,
+                        getCurrentDate(),
+                        getCurrentTime(),
+                        2,
+                        cardId,
+                        amount,
+                        "SALE",
+                        true,
+                        isImagePrinted
+                    )
 
-        findNavController().navigate(R.id.action_EMoneySuccessFragment_to_appFragment)
+                    findNavController().navigate(R.id.action_EMoneySuccessFragment_to_appFragment)
+                }
+                "armeabi-v7a" -> {
+                    A90PrintManager.printReceiptSuccess(
+                        requireContext(),
+                        schoolLogo,
+                        schoolName,
+                        majorName,
+                        traceId,
+                        getCurrentDate(),
+                        getCurrentTime(),
+                        2,
+                        cardId,
+                        amount,
+                        "SALE",
+                        true,
+                        isImagePrinted
+                    )
+
+                    findNavController().navigate(R.id.action_EMoneySuccessFragment_to_appFragment)
+                }
+                else -> {
+                    Toast.makeText(requireContext(), "Please connect the thermal printer in setting.", Toast.LENGTH_LONG).show()
+                }
+            }
+        } else {
+            PrintingManager.printManager(
+                context = requireContext(),
+                schoolLogo = schoolLogo,
+                schoolName = schoolName,
+                majorName = majorName,
+                traceId = traceId,
+                date = getCurrentDate(),
+                time = getCurrentTime(),
+                paymentType = 1,
+                amount = amount,
+                cardId = cardId,
+                type = "SALE",
+                reprint = true,
+                isImagePrint = isImagePrinted
+            )
+
+            findNavController().navigate(R.id.action_EMoneySuccessFragment_to_appFragment)
+        }
     }
 }

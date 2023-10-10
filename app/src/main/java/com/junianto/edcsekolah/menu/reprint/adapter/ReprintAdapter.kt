@@ -46,6 +46,7 @@ class ReprintAdapter : RecyclerView.Adapter<ReprintAdapter.ReprintViewHolder>() 
         private val transactionIdTextView: TextView = itemView.findViewById(R.id.tv_id)
         private val priceTextView: TextView = itemView.findViewById(R.id.tv_amount)
         private val transactionDateTextView: TextView = itemView.findViewById(R.id.tv_date)
+        private val paymentTypeTextView: TextView = itemView.findViewById(R.id.tv_payment_type)
         private val reprintButton: TextView = itemView.findViewById(R.id.btn_reprint)
 
         @SuppressLint("SetTextI18n")
@@ -54,8 +55,18 @@ class ReprintAdapter : RecyclerView.Adapter<ReprintAdapter.ReprintViewHolder>() 
             priceTextView.text = formatAmount(receipt.amount.toString())
             transactionDateTextView.text = receipt.date
 
+            val paymentType = when (receipt.paymentType) {
+                1 -> "Transaksi Tunai"
+                2 -> "Transaksi NFC"
+                3 -> "Transaksi QRIS"
+                4 -> "Transaksi IC"
+                5 -> "Transaksi Magnetic"
+                else -> "Transaksi Tunai"
+            }
+
+            paymentTypeTextView.text = paymentType
+
             reprintButton.setOnClickListener {
-                Timber.d("REPRINT FROM ADAPTER : ${receipt.id}")
                 reprintButtonClickListener?.onReprintButtonClick(receipt)
             }
         }

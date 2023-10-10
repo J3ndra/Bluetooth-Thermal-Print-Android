@@ -4,6 +4,7 @@ import android.app.Activity
 import android.bluetooth.BluetoothSocket
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -80,6 +81,38 @@ class SetupFragment : Fragment(), PrintingCallback {
 
         ivSchoolLogo = view.findViewById(R.id.iv_school_logo)
 
+        appViewModel.appSetup.observe(viewLifecycleOwner) { appSetup ->
+            // Populate the UI with the retrieved app setup data
+            etSchoolName.setText(appSetup.school_name)
+            etSchoolAddress.setText(appSetup.school_address)
+            etMajorName.setText(appSetup.major_name)
+
+            schoolLogo = appSetup.school_logo
+
+            isImagePrinted = appSetup.is_image_printed
+
+            cbIsImagePrinted.isChecked = isImagePrinted
+
+            Timber.i("School Name : ${appSetup.school_name} | School Address : ${appSetup.school_address} | Major Name : ${appSetup.major_name} | School Logo : ${appSetup.school_logo} | Is Image Printed : $isImagePrinted")
+
+            if (schoolLogo == "") {
+                ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
+            } else {
+                val options = BitmapFactory.Options().apply {
+                    inSampleSize = 1
+                }
+
+                val bitmap: Bitmap? = ImageSaver(requireContext())
+                    .setFileName("school_logo.png")
+                    .setDirectoryName("images")
+                    .load(options)
+
+                ivSchoolLogo.setImageBitmap(bitmap)
+
+//                ivSchoolLogo.setImageURI(Uri.parse(appSetup.school_logo))
+            }
+        }
+
         btnSave = view.findViewById(R.id.btn_save)
         btnSave.setOnClickListener {
             val schoolName = etSchoolName.text.toString()
@@ -93,30 +126,6 @@ class SetupFragment : Fragment(), PrintingCallback {
                 .save(ivSchoolLogo.drawable.toBitmap())
 
             appViewModel.updateAppSetup(schoolName, schoolAddress, majorName, schoolLogo, isImagePrinted)
-        }
-
-        appViewModel.appSetup.observe(viewLifecycleOwner) { appSetup ->
-            // Populate the UI with the retrieved app setup data
-            etSchoolName.setText(appSetup.school_name)
-            etSchoolAddress.setText(appSetup.school_address)
-            etMajorName.setText(appSetup.major_name)
-
-            schoolLogo = appSetup.school_logo
-
-            cbIsImagePrinted.isChecked = isImagePrinted
-
-            if (schoolLogo == "") {
-                ivSchoolLogo.setImageResource(R.drawable.tutwuri_logo)
-            } else {
-                val bitmap: Bitmap? = ImageSaver(requireContext())
-                    .setFileName("school_logo.png")
-                    .setDirectoryName("images")
-                    .load()
-
-                ivSchoolLogo.setImageBitmap(bitmap)
-                
-//                ivSchoolLogo.setImageURI(Uri.parse(appSetup.school_logo))
-            }
         }
 
         val cpuArchitecture = DeviceInfo.getCpuArchitecture()
@@ -137,10 +146,10 @@ class SetupFragment : Fragment(), PrintingCallback {
                             "12:12:12",
                             1,
                             "1234567890",
-                            "Rp. 100.000",
+                            "100000",
                             "Pembayaran SPP",
                             reprint = false,
-                            isImagePrint = true,
+                            isImagePrint = isImagePrinted,
                         )
                     }
                     "armeabi-v7a" -> {
@@ -155,10 +164,10 @@ class SetupFragment : Fragment(), PrintingCallback {
                             "12:12:12",
                             1,
                             "1234567890",
-                            "Rp. 100.000",
+                            "100000",
                             "Pembayaran SPP",
                             reprint = false,
-                            isImagePrint = true,
+                            isImagePrint = isImagePrinted,
                         )
                     }
                     else -> {

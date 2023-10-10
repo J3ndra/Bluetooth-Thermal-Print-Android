@@ -28,15 +28,23 @@ object PrintingManager {
     ) {
         val printables = ArrayList<Printable>()
 
-        val appLogo = loadAndResizeBitmap(context, schoolLogo)?.let {
-            ImagePrintable.Builder(it)
-                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
-                .setNewLinesAfter(1)
-                .build()
+//        val appLogo = loadAndResizeBitmap(context, schoolLogo)?.let {
+//            ImagePrintable.Builder(it)
+//                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+//                .setNewLinesAfter(1)
+//                .build()
+//        }
+
+        val option = BitmapFactory.Options().apply {
+            inSampleSize = 3
         }
 
+        val tutWuriLogo = ImagePrintable.Builder(BitmapFactory.decodeResource(context.resources, R.drawable.tut_wuri_logo_2, option))
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .build()
+
         val smkText = TextPrintable.Builder()
-            .setText("SMK\n")
+            .setText("\nSMK\n")
             .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
             .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
             .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
@@ -124,11 +132,11 @@ object PrintingManager {
             4 -> paymentText = "IC"
             5 -> paymentText = "MAGNETIC"
         }
-        val statusText = TextPrintable.Builder()
-            .setText("STATUS : $paymentText\n")
+        val paymentTypeText = TextPrintable.Builder()
+            .setText("PEMBAYARAN : $paymentText\n")
             .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
             .setAlignment(DefaultPrinter.ALIGNMENT_LEFT)
-            .setFontSize(DefaultPrinter.FONT_SIZE_LARGE)
+            .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
             .build()
         val cardIdText = TextPrintable.Builder()
             .setText("CARD ID : $cardId\n\n")
@@ -171,8 +179,22 @@ object PrintingManager {
             .build()
 
         if (isImagePrint) {
-            if (appLogo != null) {
-                printables.add(appLogo)
+            if (schoolLogo == "") {
+                printables.add(tutWuriLogo)
+            } else {
+                val bitmap: Bitmap? = ImageSaver(context)
+                    .setFileName("school_logo.png")
+                    .setDirectoryName("images")
+                    .load(option)
+
+                bitmap?.let {
+                    val printableImage = ImagePrintable.Builder(it)
+                        .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                        .setNewLinesAfter(1)
+                        .build()
+
+                    printables.add(printableImage)
+                }
             }
         }
         printables.add(smkText)
@@ -187,7 +209,7 @@ object PrintingManager {
         printables.add(aprvText)
         printables.add(traceText)
         printables.add(batchNoText)
-//        printables.add(statusText)
+        printables.add(paymentTypeText)
         printables.add(cardIdText)
         printables.add(typeText)
         printables.add(amountText)

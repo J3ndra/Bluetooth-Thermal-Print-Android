@@ -76,11 +76,11 @@ class ImageSaver(private val context: Context) {
         }
     }
 
-    fun load(): Bitmap? {
+    fun load(option: BitmapFactory.Options): Bitmap? {
         var inputStream: FileInputStream? = null
         try {
             inputStream = FileInputStream(createFile())
-            return BitmapFactory.decodeStream(inputStream)
+            return BitmapFactory.decodeStream(inputStream, null, option)
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {

@@ -18,8 +18,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.a90.printer.A90PrintManager
 import com.junianto.edcsekolah.data.model.Receipt
 import com.junianto.edcsekolah.menu.sale.viewmodel.SaleViewModel
+import com.junianto.edcsekolah.util.DeviceInfo
 import com.junianto.edcsekolah.util.PrintingManager
 import com.junianto.edcsekolah.util.getCurrentDate
 import com.junianto.edcsekolah.util.getCurrentDateTime
@@ -206,12 +208,7 @@ class CashEnterPinFragment : Fragment() {
         val enteredPin = pinEditTexts.joinToString("") { it.text.toString() }
 
         if(enteredPin == "000000") {
-            if (!Printooth.hasPairedPrinter()) {
-                val scanningIntent = Intent(requireContext(), ScanningActivity::class.java)
-                resultLauncher.launch(scanningIntent)
-            } else {
-                printReceipt()
-            }
+            printReceipt()
         } else {
             Toast.makeText(requireContext(), "PIN Salah", Toast.LENGTH_SHORT).show()
         }
@@ -236,29 +233,88 @@ class CashEnterPinFragment : Fragment() {
         )
 
         saleViewModel.insertReceipt(receipt) { insertedId ->
-            PrintingManager.printManager(
-                context = requireContext(),
-                schoolLogo = schoolLogo,
-                schoolName = schoolName,
-                majorName = majorName,
-                traceId = insertedId.toInt(),
-                date = getCurrentDate(),
-                time = getCurrentTime(),
-                paymentType = 1,
-                amount = amount,
-                cardId = cardId,
-                type = "SALE",
-                reprint = false,
-                isImagePrint = isImagePrinted
-            )
+            if (!Printooth.hasPairedPrinter()) {
+                when (DeviceInfo.getCpuArchitecture()) {
+                    "armeabi" -> {
+                        A90PrintManager.printReceiptSuccess(
+                            requireContext(),
+                            schoolLogo,
+                            schoolName,
+                            majorName,
+                            receipt.id,
+                            getCurrentDate(),
+                            getCurrentTime(),
+                            receipt.paymentType,
+                            receipt.cardId,
+                            receipt.amount.toString(),
+                            "SALE",
+                            true,
+                            isImagePrinted
+                        )
 
-            requireActivity().runOnUiThread {
-                findNavController().navigate(R.id.action_cashEnterPinFragment_to_cashSuccessFragment, Bundle().apply {
-                    putInt("traceId", insertedId.toInt())
-                    putString("cardId", cardId)
-                    putString("amount", amount)
-                })
+                        requireActivity().runOnUiThread {
+                            findNavController().navigate(R.id.action_cashEnterPinFragment_to_cashSuccessFragment, Bundle().apply {
+                                putInt("traceId", insertedId.toInt())
+                                putString("cardId", cardId)
+                                putString("amount", amount)
+                            })
+                        }
+                    }
+                    "armeabi-v7a" -> {
+                        A90PrintManager.printReceiptSuccess(
+                            requireContext(),
+                            schoolLogo,
+                            schoolName,
+                            majorName,
+                            receipt.id,
+                            getCurrentDate(),
+                            getCurrentTime(),
+                            receipt.paymentType,
+                            receipt.cardId,
+                            receipt.amount.toString(),
+                            "SALE",
+                            true,
+                            isImagePrinted
+                        )
+
+                        requireActivity().runOnUiThread {
+                            findNavController().navigate(R.id.action_cashEnterPinFragment_to_cashSuccessFragment, Bundle().apply {
+                                putInt("traceId", insertedId.toInt())
+                                putString("cardId", cardId)
+                                putString("amount", amount)
+                            })
+                        }
+                    }
+                    else -> {
+                        Toast.makeText(requireContext(), "Please connect the thermal printer in setting.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            } else {
+                PrintingManager.printManager(
+                    context = requireContext(),
+                    schoolLogo = schoolLogo,
+                    schoolName = schoolName,
+                    majorName = majorName,
+                    traceId = insertedId.toInt(),
+                    date = getCurrentDate(),
+                    time = getCurrentTime(),
+                    paymentType = 1,
+                    amount = amount,
+                    cardId = cardId,
+                    type = "SALE",
+                    reprint = false,
+                    isImagePrint = isImagePrinted
+                )
+
+                requireActivity().runOnUiThread {
+                    findNavController().navigate(R.id.action_cashEnterPinFragment_to_cashSuccessFragment, Bundle().apply {
+                        putInt("traceId", insertedId.toInt())
+                        putString("cardId", cardId)
+                        putString("amount", amount)
+                    })
+                }
             }
+
         }
     }
 }

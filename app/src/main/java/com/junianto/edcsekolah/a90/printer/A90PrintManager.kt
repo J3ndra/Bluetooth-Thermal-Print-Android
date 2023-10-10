@@ -1,13 +1,18 @@
 package com.junianto.edcsekolah.a90.printer
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.util.ImageSaver
 import com.junianto.edcsekolah.util.bitmapToByteArray
 import com.junianto.edcsekolah.util.drawableToByteArray
+import com.junianto.edcsekolah.util.formatAmount
 import com.junianto.edcsekolah.util.loadAndResizeBitmap
 import com.vanstone.trans.api.PrinterApi
 import com.vanstone.trans.api.SystemApi
 import timber.log.Timber
+import java.nio.ByteBuffer
 
 object A90PrintManager {
 
@@ -27,23 +32,39 @@ object A90PrintManager {
         isImagePrint: Boolean,
     ) {
         PrinterApi.PrnClrBuff_Api()
+        if (isImagePrint) {
+            if (schoolLogo == "") {
+                val options = BitmapFactory.Options().apply {
+                    inSampleSize = 3
+                }
+                val logo = BitmapFactory.decodeResource(context.resources, R.drawable.tut_wuri_logo_2, options)
+                val width = logo.width
+                Timber.i("logo width: $width")
+                val offset = (384 - width) / 2
+                Timber.i("logo offset: $offset")
+                PrinterApi.PrnLeftIndSet_Api(offset.toShort())
+                PrinterApi.PrnLogo_Api(logo)
+            } else {
+                val options = BitmapFactory.Options().apply {
+                    inSampleSize = 2
+                }
+                val logo = BitmapFactory.decodeStream(
+                    context.openFileInput("school_logo.png"),
+                    null,
+                    options
+                )
+                val width = logo?.width
+                val offset = (384 - width!!) / 2
+                PrinterApi.PrnLeftIndSet_Api(offset.toShort())
+                PrinterApi.PrnLogo_Api(logo)
+            }
+        }
+        PrinterApi.PrnLeftIndSet_Api(0)
+        PrinterApi.PrnStr_Api("\n")
         PrinterApi.printSetAlign_Api(1)
         PrinterApi.printSetTextSize_Api(36)
         PrinterApi.PrnSetGray_Api(10)
         PrinterApi.printSetBlodText_Api(true)
-        if (isImagePrint) {
-            if (schoolLogo == "") {
-                PrinterApi.printAddImage_Api(
-                    0x07,
-                    256,
-                    256,
-                    drawableToByteArray(
-                        context,
-                        R.drawable.tut_wuri_logo_2
-                    )
-                )
-            }
-        }
         PrinterApi.PrnStr_Api("SMK")
         PrinterApi.printSetTextSize_Api(24)
         PrinterApi.printSetBlodText_Api(false)
@@ -51,6 +72,65 @@ object A90PrintManager {
         PrinterApi.printSetTextSize_Api(36)
         PrinterApi.printSetBlodText_Api(true)
         PrinterApi.PrnStr_Api(schoolName)
+        PrinterApi.printSetTextSize_Api(16)
+        PrinterApi.printSetBlodText_Api(false)
+        PrinterApi.PrnStr_Api("""
+            EDC No. 493.24 TYPE 101
+            23112022
+        """.trimIndent())
+        PrinterApi.printSetTextSize_Api(36)
+        PrinterApi.printSetBlodText_Api(true)
+        PrinterApi.PrnStr_Api("--------------------------------")
+        PrinterApi.printSetAlign_Api(0)
+        PrinterApi.printSetTextSize_Api(24)
+        PrinterApi.printSetBlodText_Api(false)
+        PrinterApi.PrnStr_Api("TERMINAL ID: ${SystemApi.ReadPosSn_Api()}")
+        PrinterApi.PrnStr_Api("MERCHANT ID : 000000000")
+        PrinterApi.PrnStr_Api("DATE : $date")
+        PrinterApi.PrnStr_Api("TIME : $time")
+        PrinterApi.PrnStr_Api("REFF NO : 000000")
+        PrinterApi.PrnStr_Api("APRV NO : 000000")
+        PrinterApi.PrnStr_Api("TRACE NO : $traceId")
+        PrinterApi.PrnStr_Api("BATCH NO : 000000")
+        var paymentText = ""
+        when (paymentType) {
+            1 -> paymentText = "CASH"
+            2 -> paymentText = "NFC"
+            3 -> paymentText = "QR"
+            4 -> paymentText = "IC"
+            5 -> paymentText = "MAGNETIC"
+        }
+        PrinterApi.PrnStr_Api("PEMBAYARAN : $paymentText")
+        PrinterApi.PrnStr_Api("CARD ID : $cardId")
+        var amountText = ""
+        when (type) {
+            "SALE" -> amountText = formatAmount(amount)
+            "VOID" -> amountText = "-${formatAmount(amount)}"
+            "REFUND" -> amountText = formatAmount(amount)
+        }
+        PrinterApi.PrnStr_Api("TOTAL : $amountText")
+        PrinterApi.printSetTextSize_Api(36)
+        PrinterApi.printSetBlodText_Api(true)
+        PrinterApi.PrnStr_Api("--------------------------------")
+        PrinterApi.printSetTextSize_Api(36)
+        PrinterApi.printSetBlodText_Api(true)
+        PrinterApi.PrnStr_Api("SIGNATURE")
+        PrinterApi.printSetTextSize_Api(36)
+        PrinterApi.printSetBlodText_Api(true)
+        PrinterApi.PrnStr_Api("--------------------------------")
+        PrinterApi.printSetAlign_Api(1)
+        PrinterApi.printSetTextSize_Api(18)
+        PrinterApi.printSetBlodText_Api(false)
+        PrinterApi.PrnStr_Api("CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND/OR SERVICES")
+        var copyText = ""
+        copyText = if (reprint) {
+            "** BANK COPY **"
+        } else {
+            "** CUSTOMER COPY **"
+        }
+        PrinterApi.printSetTextSize_Api(24)
+        PrinterApi.printSetBlodText_Api(true)
+        PrinterApi.PrnStr_Api(copyText)
 
         PrinterApi.PrnStr_Api("\n\n\n")
         printData()
