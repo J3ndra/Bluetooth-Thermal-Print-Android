@@ -105,5 +105,11 @@
     <string name="next">next</string>
 
     <string name="please_connect_to_bluetooth_printer">Tolong hubungkan printer pada setting aplikasi.</string>
+    <string name="magnetic_card">MAGNETIC CARD</string>
+    <string name="pembayaran_melalui_magnetic_card">Pembayaran melalui magnetic card</string>
+    <string name="ic_card">IC CARD</string>
+    <string name="pembayaran_melalui_ic_card">Pembayaran melalui IC Card</string>
+    <string name="insert_card">INSERT CARD</string>
+    <string name="masukkan_kartu_ic_card_anda_ke_mesin">Masukkan kartu IC Card anda ke mesin</string>
 
 </resources>

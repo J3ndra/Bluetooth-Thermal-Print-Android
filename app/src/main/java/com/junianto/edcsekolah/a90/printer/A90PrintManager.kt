@@ -104,7 +104,7 @@ object A90PrintManager {
                 1 -> paymentText = "CASH"
                 2 -> paymentText = "NFC"
                 3 -> paymentText = "QRIS"
-                4 -> paymentText = "IC"
+                4 -> paymentText = "IC CARD"
                 5 -> paymentText = "MAGNETIC"
             }
             PrinterApi.PrnStr_Api("PEMBAYARAN : $paymentText")
@@ -239,7 +239,7 @@ object A90PrintManager {
             1 -> paymentText = "CASH"
             2 -> paymentText = "NFC"
             3 -> paymentText = "QRIS"
-            4 -> paymentText = "IC"
+            4 -> paymentText = "IC CARD"
             5 -> paymentText = "MAGNETIC"
         }
         PrinterApi.PrnStr_Api("PEMBAYARAN : $paymentText")
@@ -263,7 +263,9 @@ object A90PrintManager {
         PrinterApi.printSetAlign_Api(1)
         PrinterApi.printSetTextSize_Api(18)
         PrinterApi.printSetBlodText_Api(false)
-        PrinterApi.PrnStr_Api("CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND/OR SERVICES")
+        PrinterApi.PrnStr_Api("""
+            CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND/OR SERVICES
+        """.trimIndent())
         var copyText = ""
         copyText = if (reprint) {
             "** BANK COPY **"
@@ -354,7 +356,10 @@ object A90PrintManager {
         PrinterApi.printSetAlign_Api(0)
         PrinterApi.printSetTextSize_Api(24)
         PrinterApi.printSetBlodText_Api(true)
-        PrinterApi.PrnStr_Api("SILAHKAN BAYAR SESUAI DENGAN KETENTUAN HARGA DIATAS!")
+        PrinterApi.PrnStr_Api("\n")
+        PrinterApi.PrnStr_Api("""
+            SILAHKAN BAYAR SESUAI DENGAN KETENTUAN HARGA DIATAS!
+        """.trimIndent())
 
         PrinterApi.PrnStr_Api("\n\n\n")
 

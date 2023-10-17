@@ -48,8 +48,8 @@ class SettlementAdapter : RecyclerView.Adapter<SettlementAdapter.ViewHolder>() {
             when (receipt.paymentType) {
                 1 -> typeText = "CASH"
                 2 -> typeText = "NFC"
-                3 -> typeText = "QR"
-                4 -> typeText = "IC"
+                3 -> typeText = "QRIS"
+                4 -> typeText = "IC CARD"
                 5 -> typeText = "MAGNETIC"
             }
 

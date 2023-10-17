@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
             }
             else -> {
                 Toast.makeText(this, "Unsupported CPU Architecture", Toast.LENGTH_LONG).show()
+                appViewModel.updateSdkInitialized(false)
             }
         }
 

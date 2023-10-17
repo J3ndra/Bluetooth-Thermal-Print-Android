@@ -230,7 +230,7 @@ object PrintingManager {
             1 -> paymentText = "CASH"
             2 -> paymentText = "NFC"
             3 -> paymentText = "QRIS"
-            4 -> paymentText = "IC"
+            4 -> paymentText = "IC CARD"
             5 -> paymentText = "MAGNETIC"
         }
         val paymentTypeText = TextPrintable.Builder()

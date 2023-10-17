@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
@@ -28,6 +29,7 @@ class EMoneyEnterPriceFragment : Fragment() {
 
     private lateinit var ivSchoolLogo: ImageView
     private lateinit var schoolLogo: String
+    private var isSdkInitialized = false
 
     // EDIT TEXT
     private lateinit var etAmount: EditText
@@ -99,6 +101,8 @@ class EMoneyEnterPriceFragment : Fragment() {
                 ivSchoolLogo.setImageURI(Uri.parse(appSetup.school_logo))
             }
 
+            isSdkInitialized = appSetup.is_sdk_initialized
+
             Timber.d("APP FRAGMENT : $appSetup")
         }
 
@@ -129,9 +133,13 @@ class EMoneyEnterPriceFragment : Fragment() {
                         putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
                     })
                 } else {
-                    findNavController().navigate(R.id.action_EMoneyEnterPriceFragment_to_a90NfcTapFragment, Bundle().apply {
-                        putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
-                    })
+                    if (isSdkInitialized) {
+                        findNavController().navigate(R.id.action_EMoneyEnterPriceFragment_to_a90NfcTapFragment, Bundle().apply {
+                            putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
+                        })
+                    } else {
+                        Toast.makeText(requireContext(), "NFC tidak tersedia", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
                 AlertDialog.Builder(requireContext())

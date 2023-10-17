@@ -53,6 +53,7 @@
     <uses-permission android:name="android.permission.CLOUDPOS_CONTACTLESS_CARD"/>
     <uses-permission android:name="android.permission.CLOUDPOS_LED" />
     <uses-permission android:name="android.permission.CLOUDPOS_SMARTCARD"/>
+    <uses-permission android:name="android.permission.CLOUDPOS_MSR"/>
 
     <application
         android:name=".EDCSekolah"

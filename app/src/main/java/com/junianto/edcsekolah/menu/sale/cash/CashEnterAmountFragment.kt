@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
@@ -27,6 +28,7 @@ class CashEnterAmountFragment : Fragment() {
 
     private lateinit var ivSchoolLogo: ImageView
     private lateinit var schoolLogo: String
+    private lateinit var paymentType: String
 
     // EDIT TEXT
     private lateinit var etAmount: EditText
@@ -57,6 +59,13 @@ class CashEnterAmountFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_cash_enter_amount, container, false)
+
+        // Get bundle
+        val bundle = arguments
+        if (bundle != null) {
+            paymentType = bundle.getString("paymentType", "") ?: ""
+            Timber.d("Payment Type: $paymentType")
+        }
 
         // SETUP VIEW
         ivSchoolLogo = rootView.findViewById(R.id.iv_school_logo)
@@ -121,9 +130,20 @@ class CashEnterAmountFragment : Fragment() {
         btnPinOk.setOnClickListener {
             Timber.d("Amount: ${etAmount.text}")
             if (etAmount.text.toString() != "0" && etAmount.text.toString() != "") {
-                findNavController().navigate(R.id.action_cashEnterAmountFragment_to_cashEnterPinFragment, Bundle().apply {
-                    putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
-                })
+                if (paymentType == "CASH") {
+                    findNavController().navigate(R.id.action_cashEnterAmountFragment_to_cashEnterPinFragment, Bundle().apply {
+                        putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
+                        putString("paymentType", "CASH")
+                    })
+                } else if (paymentType == "ICCARD") {
+                    findNavController().navigate(R.id.action_cashEnterAmountFragment_to_icCardFragment, Bundle().apply {
+                        putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
+                    })
+                } else if (paymentType == "EMONEY") {
+                    // TODO
+                } else {
+                    Toast.makeText(requireContext(), "Tipe pembayaran tidak ditemukan!", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Perhatian")

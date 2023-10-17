@@ -14,7 +14,8 @@ import com.junianto.edcsekolah.R
 class SaleFragment : Fragment() {
 
     private lateinit var cvCash: CardView
-    private lateinit var cvCashless: CardView
+    private lateinit var cvInsertCard: CardView
+    private lateinit var cvMagneticCard: CardView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +25,8 @@ class SaleFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_sale, container, false)
 
         cvCash = rootView.findViewById(R.id.cv_cash)
-        cvCashless = rootView.findViewById(R.id.cv_cashless)
+        cvInsertCard = rootView.findViewById(R.id.cv_insert_card)
+        cvMagneticCard = rootView.findViewById(R.id.cv_magnetic_card)
 
         return rootView
     }
@@ -33,17 +35,25 @@ class SaleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         cvCash.setOnClickListener {
-            findNavController().navigate(R.id.action_saleFragment_to_cashEnterAmountFragment)
+            findNavController().navigate(R.id.action_saleFragment_to_cashEnterAmountFragment, Bundle().apply {
+                putString("paymentType", "CASH")
+            })
         }
 
-        cvCashless.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle("Coming Soon")
-                .setMessage("Fitur ini akan segera hadir")
-                .setPositiveButton("OK") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+        cvInsertCard.setOnClickListener {
+            findNavController().navigate(R.id.action_saleFragment_to_cashEnterAmountFragment, Bundle().apply {
+                putString("paymentType", "ICCARD")
+            })
         }
+
+//        cvCashless.setOnClickListener {
+//            AlertDialog.Builder(requireContext())
+//                .setTitle("Coming Soon")
+//                .setMessage("Fitur ini akan segera hadir")
+//                .setPositiveButton("OK") { dialog, _ ->
+//                    dialog.dismiss()
+//                }
+//                .show()
+//        }
     }
 }
