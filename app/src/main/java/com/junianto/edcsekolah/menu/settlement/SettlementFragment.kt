@@ -2,6 +2,8 @@ package com.junianto.edcsekolah.menu.settlement
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,10 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.a90.printer.A90PrintManager
 import com.junianto.edcsekolah.data.model.Receipt
 import com.junianto.edcsekolah.menu.settlement.adapter.SettlementAdapter
 import com.junianto.edcsekolah.menu.settlement.viewmodel.SettlementViewModel
+import com.junianto.edcsekolah.util.ImageSaver
 import com.junianto.edcsekolah.util.formatAmount
+import com.junianto.edcsekolah.util.getCurrentDate
+import com.junianto.edcsekolah.util.getCurrentTime
 import com.junianto.edcsekolah.util.loadAndResizeBitmap
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.data.printable.ImagePrintable
@@ -43,6 +50,8 @@ class SettlementFragment : Fragment() {
     private lateinit var schoolName: String
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
+    private var isImagePrinted = false
+    private var isSdkInitialized = false
 
     private var receipts: List<Receipt> = emptyList()
 
@@ -78,6 +87,8 @@ class SettlementFragment : Fragment() {
             schoolName = it.school_name
             majorName = it.major_name
             schoolLogo = it.school_logo
+            isImagePrinted = it.is_image_printed
+            isSdkInitialized = it.is_sdk_initialized
         }
 
         return rootView
@@ -88,16 +99,36 @@ class SettlementFragment : Fragment() {
 
         btnSettlement.setOnClickListener {
             if (!Printooth.hasPairedPrinter()) {
-                val scanningIntent = Intent(requireContext(), ScanningActivity::class.java)
-                resultLauncher.launch(scanningIntent)
+                if (isSdkInitialized) {
+                    A90PrintManager.printSettlement(
+                        context = requireContext(),
+                        schoolLogo = schoolLogo,
+                        schoolName = schoolName,
+                        majorName = majorName,
+                        date = getCurrentDate(),
+                        time = getCurrentTime(),
+                        type = "SALE",
+                        reprint = true,
+                        isImagePrint = isImagePrinted,
+                        receipts = receipts,
+                    )
+
+                    lifecycleScope.launch {
+                        viewModel.deleteAllReceiptsAndResetId()
+                    }
+
+                    findNavController().navigate(R.id.action_settlementFragment_to_appFragment)
+                } else {
+                    Toast.makeText(requireContext(), R.string.please_connect_to_bluetooth_printer, Toast.LENGTH_SHORT).show()
+                }
             } else {
-                printSettlement(schoolName, majorName)
+                printSettlement(schoolName, majorName, isImagePrinted)
 
                 lifecycleScope.launch {
                     viewModel.deleteAllReceiptsAndResetId()
-
-                    findNavController().navigate(R.id.action_settlementFragment_to_appFragment)
                 }
+
+                findNavController().navigate(R.id.action_settlementFragment_to_appFragment)
             }
         }
     }
@@ -109,15 +140,18 @@ class SettlementFragment : Fragment() {
     private fun printSettlement(
         schoolName: String,
         majorName: String,
+        isImagePrinted: Boolean,
     ) {
         val printables = ArrayList<Printable>()
 
-        val tutWuriLogo = loadAndResizeBitmap(requireContext(), schoolLogo)?.let {
-            ImagePrintable.Builder(it)
-                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
-                .setNewLinesAfter(1)
-                .build()
+        val option = BitmapFactory.Options().apply {
+            inSampleSize = 3
         }
+
+        val tutWuriLogo = ImagePrintable.Builder(BitmapFactory.decodeResource(requireContext().resources, R.drawable.tut_wuri_logo_2, option))
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .build()
+
         val smkText = TextPrintable.Builder()
             .setText("SMK\n")
             .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
@@ -193,8 +227,24 @@ class SettlementFragment : Fragment() {
             .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
             .build()
 
-        if (tutWuriLogo != null) {
-            printables.add(tutWuriLogo)
+        if (isImagePrinted) {
+            if (schoolLogo == "") {
+                printables.add(tutWuriLogo)
+            } else {
+                val bitmap: Bitmap? = ImageSaver(requireContext())
+                    .setFileName("school_logo.png")
+                    .setDirectoryName("images")
+                    .load(option)
+
+                bitmap?.let {
+                    val printableImage = ImagePrintable.Builder(it)
+                        .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                        .setNewLinesAfter(1)
+                        .build()
+
+                    printables.add(printableImage)
+                }
+            }
         }
         printables.add(smkText)
         printables.add(majorText)
@@ -255,7 +305,7 @@ class SettlementFragment : Fragment() {
     /* Inbuilt activity to pair device with printer or select from list of pair bluetooth devices */
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == ScanningActivity.SCANNING_FOR_PRINTER &&  result.resultCode == Activity.RESULT_OK) {
-            printSettlement(schoolName, majorName)
+            printSettlement(schoolName, majorName, isImagePrinted)
         }
     }
 }

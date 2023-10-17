@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.a90.printer.A90PrintManager
 import com.junianto.edcsekolah.data.model.Receipt
 import com.junianto.edcsekolah.menu.qris.viewmodel.QrisViewModel
 import com.junianto.edcsekolah.util.DeviceInfo
@@ -40,6 +41,7 @@ class QrisDetailFragment : Fragment() {
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
     private var isImagePrinted = false
+    private var isSdkInitialized = false
 
     // VIEW
     private lateinit var btnNext: Button
@@ -63,6 +65,7 @@ class QrisDetailFragment : Fragment() {
             majorName = it.major_name
             schoolLogo = it.school_logo
             isImagePrinted = it.is_image_printed
+            isSdkInitialized = it.is_sdk_initialized
 
             updateUI()
         }
@@ -80,27 +83,7 @@ class QrisDetailFragment : Fragment() {
         val cpuArchitecture = DeviceInfo.getCpuArchitecture()
 
         btnNext.setOnClickListener {
-            if (!Printooth.hasPairedPrinter()) {
-                when (cpuArchitecture) {
-                    "armeabi" -> {
-                        // TODO: Print using A90 SDK
-                    }
-                    "armeabi-v7a" -> {
-                        // TODO: Print using A90 SDK
-                    }
-                    else -> {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("ERROR")
-                            .setMessage("Tolong hubungkan printer terlebih dahulu di setting aplikasi.")
-                            .setPositiveButton("OK") { dialog, _ ->
-                                dialog.dismiss()
-                            }
-                            .show()
-                    }
-                }
-            } else {
-                printReceiptUsingBluetooth()
-            }
+            printReceipt()
         }
     }
 
@@ -119,38 +102,69 @@ class QrisDetailFragment : Fragment() {
         ivQris.setImageBitmap(generateQRCode(qrContent))
     }
 
-    private fun printReceiptUsingBluetooth() {
+    private fun printReceipt() {
         val receipt = Receipt(
             id = 0,
             amount = amount.toInt(),
             date = getCurrentDateTime(),
-            cardId = "123456",
+            cardId = "QRIS",
             paymentType = 3,
         )
 
         qrisViewModel.insertReceipt(receipt) {
-            PrintingManager.printManager(
-                context = requireContext(),
-                schoolLogo = schoolLogo,
-                schoolName = schoolName,
-                majorName = majorName,
-                traceId = it.toInt(),
-                date = getCurrentDate(),
-                time = getCurrentTime(),
-                paymentType = 1,
-                amount = amount,
-                cardId = "123456",
-                type = "SALE",
-                reprint = false,
-                isImagePrint = isImagePrinted
-            )
+            if (!Printooth.hasPairedPrinter()) {
+                if (isSdkInitialized) {
+                    A90PrintManager.printReceiptSuccess(
+                        context = requireContext(),
+                        schoolLogo = schoolLogo,
+                        schoolName = schoolName,
+                        majorName = majorName,
+                        traceId = it.toInt(),
+                        date = getCurrentDate(),
+                        time = getCurrentTime(),
+                        paymentType = 3,
+                        amount = amount,
+                        cardId = "QRIS",
+                        type = "SALE",
+                        reprint = false,
+                        isImagePrint = isImagePrinted
+                    )
 
-            requireActivity().runOnUiThread {
-                findNavController().navigate(R.id.action_qrisDetailFragment_to_qrisSuccessFragment, Bundle().apply {
-                    putInt("traceId", it.toInt())
-                    putString("cardId", "123456")
-                    putString("amount", amount)
-                })
+                    requireActivity().runOnUiThread {
+                        findNavController().navigate(R.id.action_qrisDetailFragment_to_qrisSuccessFragment, Bundle().apply {
+                            putInt("traceId", it.toInt())
+                            putString("cardId", "QRIS")
+                            putString("amount", amount)
+                        })
+                    }
+                } else {
+                    Toast.makeText(requireContext(), R.string.please_connect_to_bluetooth_printer, Toast.LENGTH_LONG).show()
+                }
+
+            } else {
+                PrintingManager.printManager(
+                    context = requireContext(),
+                    schoolLogo = schoolLogo,
+                    schoolName = schoolName,
+                    majorName = majorName,
+                    traceId = it.toInt(),
+                    date = getCurrentDate(),
+                    time = getCurrentTime(),
+                    paymentType = 3,
+                    amount = amount,
+                    cardId = "QRIS",
+                    type = "SALE",
+                    reprint = false,
+                    isImagePrint = isImagePrinted
+                )
+
+                requireActivity().runOnUiThread {
+                    findNavController().navigate(R.id.action_qrisDetailFragment_to_qrisSuccessFragment, Bundle().apply {
+                        putInt("traceId", it.toInt())
+                        putString("cardId", "QRIS")
+                        putString("amount", amount)
+                    })
+                }
             }
         }
     }

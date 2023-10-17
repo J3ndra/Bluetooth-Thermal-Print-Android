@@ -104,4 +104,6 @@
     <string name="qris">QRIS</string>
     <string name="next">next</string>
 
+    <string name="please_connect_to_bluetooth_printer">Tolong hubungkan printer pada setting aplikasi.</string>
+
 </resources>

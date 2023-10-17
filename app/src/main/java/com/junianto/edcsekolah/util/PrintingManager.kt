@@ -11,6 +11,107 @@ import com.mazenrashed.printooth.data.printable.TextPrintable
 import com.mazenrashed.printooth.data.printer.DefaultPrinter
 
 object PrintingManager {
+    fun printQRIS(
+        context: Context,
+        schoolLogo: String,
+        schoolName: String,
+        majorName: String,
+        isImagePrint: Boolean,
+        amount: String,
+    ) {
+        val printables = ArrayList<Printable>()
+
+        val option = BitmapFactory.Options().apply {
+            inSampleSize = 3
+        }
+
+        val tutWuriLogo = ImagePrintable.Builder(BitmapFactory.decodeResource(context.resources, R.drawable.tut_wuri_logo_2, option))
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .build()
+
+        val qrContent = buildString {
+            append("$schoolName - $majorName\n")
+            append(formatAmount(amount))
+        }
+        val qrisPrint = generateQRCode(qrContent)?.let {
+            ImagePrintable.Builder(it)
+                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                .build()
+        }
+
+        val smkText = TextPrintable.Builder()
+            .setText("\nSMK\n")
+            .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
+            .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .setFontSize(DefaultPrinter.FONT_SIZE_LARGE)
+            .build()
+        val majorText = TextPrintable.Builder()
+            .setText("$majorName\n")
+            .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
+            .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .build()
+        val schoolText = TextPrintable.Builder()
+            .setText("$schoolName\n")
+            .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
+            .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
+            .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .build()
+        val edcNoText = TextPrintable.Builder()
+            .setText("""
+                EDC No. 493.24 TYPE 101
+                23112022
+            """.trimIndent() + "\n")
+            .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
+            .build()
+        val linedText = TextPrintable.Builder()
+            .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
+            .setText("================================\n")
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .build()
+        val amountNeedToPayText = TextPrintable.Builder()
+            .setText("TOTAL YANG HARUS DIBAYAR ADALAH ${formatAmount(amount)}. SILAHKAN SCAN BARCODE DIATAS UNTUK MENYELESAIKAN PEMBAYARAN!")
+            .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
+            .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+            .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
+            .build()
+
+        if (isImagePrint) {
+            if (schoolLogo == "") {
+                printables.add(tutWuriLogo)
+            } else {
+                val bitmap: Bitmap? = ImageSaver(context)
+                    .setFileName("school_logo.png")
+                    .setDirectoryName("images")
+                    .load(option)
+
+                bitmap?.let {
+                    val printableImage = ImagePrintable.Builder(it)
+                        .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                        .setNewLinesAfter(1)
+                        .build()
+
+                    printables.add(printableImage)
+                }
+            }
+        }
+        printables.add(smkText)
+        printables.add(majorText)
+        printables.add(schoolText)
+        printables.add(edcNoText)
+        printables.add(linedText)
+        if (qrisPrint != null) {
+            printables.add(qrisPrint)
+        }
+        printables.add(linedText)
+        printables.add(amountNeedToPayText)
+
+        Printooth.printer().print(printables)
+    }
     fun printManager(
         context: Context,
         schoolLogo: String,
@@ -128,7 +229,7 @@ object PrintingManager {
         when (paymentType) {
             1 -> paymentText = "CASH"
             2 -> paymentText = "NFC"
-            3 -> paymentText = "QR"
+            3 -> paymentText = "QRIS"
             4 -> paymentText = "IC"
             5 -> paymentText = "MAGNETIC"
         }

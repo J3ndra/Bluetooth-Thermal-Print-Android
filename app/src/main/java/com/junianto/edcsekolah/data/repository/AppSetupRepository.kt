@@ -16,6 +16,7 @@ import javax.inject.Singleton
 interface AppSetupRepository {
     fun getAppSetup(): Flow<AppSetup>
     suspend fun updateAppSetup(school_name: String, school_address: String, major_name: String, school_logo: String, is_image_printed: Boolean)
+    suspend fun updateSdkInitialized(is_sdk_initialized: Boolean)
 }
 
 @Singleton
@@ -31,8 +32,9 @@ class DataStoreAppSetupRepository @Inject constructor(context: Context) : AppSet
             val majorName = preferences[APP_MAJOR_NAME_KEY] ?: "Bisnis dan Manajemen"
             val schoolLogo = preferences[APP_SCHOOL_LOGO] ?: ""
             val isImagePrinted = preferences[IS_IMAGE_PRINTED] ?: true
+            val isSdkInitialized = preferences[IS_SDK_INITIALIZED] ?: false
 
-            AppSetup(schoolName, schoolAddress, majorName, schoolLogo, isImagePrinted)
+            AppSetup(schoolName, schoolAddress, majorName, schoolLogo, isImagePrinted, isSdkInitialized)
         }
     }
 
@@ -46,11 +48,18 @@ class DataStoreAppSetupRepository @Inject constructor(context: Context) : AppSet
         }
     }
 
+    override suspend fun updateSdkInitialized(is_sdk_initialized: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[IS_SDK_INITIALIZED] = is_sdk_initialized
+        }
+    }
+
     companion object {
         private val APP_SCHOOL_NAME_KEY = stringPreferencesKey("school_name")
         private val APP_SCHOOL_ADDRESS_KEY = stringPreferencesKey("school_address")
         private val APP_MAJOR_NAME_KEY = stringPreferencesKey("major_name")
         private val APP_SCHOOL_LOGO = stringPreferencesKey("school_logo")
         private val IS_IMAGE_PRINTED = booleanPreferencesKey("is_image_printed")
+        private val IS_SDK_INITIALIZED = booleanPreferencesKey("is_sdk_initialized")
     }
 }

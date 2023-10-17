@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
+import com.junianto.edcsekolah.a90.printer.A90PrintManager
 import com.junianto.edcsekolah.util.PrintingManager
 import com.junianto.edcsekolah.util.formatAmount
 import com.junianto.edcsekolah.util.getCurrentDate
@@ -35,6 +37,7 @@ class DeleteSuccessFragment : Fragment() {
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
     private var isImagePrinted = false
+    private var isSdkInitialized = false
 
     private lateinit var tvPaymentDesc: TextView
     private lateinit var btnReprintReceipt: Button
@@ -65,6 +68,7 @@ class DeleteSuccessFragment : Fragment() {
             majorName = it.major_name
             schoolLogo = it.school_logo
             isImagePrinted = it.is_image_printed
+            isSdkInitialized = it.is_sdk_initialized
         }
 
         tvPaymentDesc = rootView.findViewById(R.id.tv_payment_desc)
@@ -102,22 +106,46 @@ class DeleteSuccessFragment : Fragment() {
     }
 
     private fun printReceipt() {
-        PrintingManager.printManager(
-            context = requireContext(),
-            schoolLogo = schoolLogo,
-            schoolName = schoolName,
-            majorName = majorName,
-            traceId = traceId.toInt(),
-            date = getCurrentDate(),
-            time = getCurrentTime(),
-            paymentType = paymentType,
-            amount = amount,
-            cardId = cardId,
-            type = "VOID",
-            reprint = true,
-            isImagePrint = isImagePrinted
-        )
+        if (!Printooth.hasPairedPrinter()) {
+            if (isSdkInitialized) {
+                A90PrintManager.printReceiptSuccess(
+                    context = requireContext(),
+                    schoolLogo = schoolLogo,
+                    schoolName = schoolName,
+                    majorName = majorName,
+                    traceId = traceId.toInt(),
+                    date = getCurrentDate(),
+                    time = getCurrentTime(),
+                    paymentType = paymentType,
+                    amount = amount,
+                    cardId = cardId,
+                    type = "VOID",
+                    reprint = true,
+                    isImagePrint = isImagePrinted
+                )
 
-        findNavController().navigate(R.id.action_deleteSuccessFragment_to_appFragment)
+                findNavController().navigate(R.id.action_deleteSuccessFragment_to_appFragment)
+            } else {
+                Toast.makeText(requireContext(), R.string.please_connect_to_bluetooth_printer, Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            PrintingManager.printManager(
+                context = requireContext(),
+                schoolLogo = schoolLogo,
+                schoolName = schoolName,
+                majorName = majorName,
+                traceId = traceId.toInt(),
+                date = getCurrentDate(),
+                time = getCurrentTime(),
+                paymentType = paymentType,
+                amount = amount,
+                cardId = cardId,
+                type = "VOID",
+                reprint = true,
+                isImagePrint = isImagePrinted
+            )
+
+            findNavController().navigate(R.id.action_deleteSuccessFragment_to_appFragment)
+        }
     }
 }

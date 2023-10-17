@@ -4,8 +4,10 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -42,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
     )
+
+    private val appViewModel: AppViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,14 +124,41 @@ class MainActivity : AppCompatActivity() {
                 Common.DbgEN_Api(1)
                 Common.setCallback(ccb)
 
-                Timber.i("SDK init successed")
+                Timber.i("SDK init succeeded")
+
+                appViewModel.updateSdkInitialized(true)
             }
 
             override fun sdkInitFailed() {
                 Timber.e("SDK init failed")
+                appViewModel.updateSdkInitialized(false)
             }
         })
     }
+
+//    private fun initA90Sdk() {
+//        val curAppDir = applicationContext.filesDir.absolutePath
+//        SystemApi.SystemInit_Api(0, CommonConvert.StringToBytes("$curAppDir/\u0000"), this, object : ISdkStatue {
+//            override fun sdkInitSuccessed() {
+//                CommApi.InitComm_Api(applicationContext)
+//
+//                Common.Init_Api()
+//                PayPass.Init_Api()
+//                PayWave.PayWave_Init_Api()
+//
+//                EMV.Init_Api()
+//
+//                Common.DbgEN_Api(1)
+//                Common.setCallback(ccb)
+//
+//                Timber.i("SDK init successed")
+//            }
+//
+//            override fun sdkInitFailed() {
+//                Timber.e("SDK init failed")
+//            }
+//        })
+//    }
 
     private val ccb = object : CommonCB {
         override fun GetDateTime(bytes: ByteArray): Int {

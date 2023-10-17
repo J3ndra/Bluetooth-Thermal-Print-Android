@@ -6,4 +6,5 @@ data class AppSetup(
     val major_name: String,
     val school_logo: String,
     val is_image_printed: Boolean,
+    val is_sdk_initialized: Boolean,
 )

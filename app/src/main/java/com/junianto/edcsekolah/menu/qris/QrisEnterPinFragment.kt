@@ -1,7 +1,5 @@
-package com.junianto.edcsekolah.menu.delete
+package com.junianto.edcsekolah.menu.qris
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,34 +11,21 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.junianto.edcsekolah.AppViewModel
 import com.junianto.edcsekolah.R
 import com.junianto.edcsekolah.a90.printer.A90PrintManager
-import com.junianto.edcsekolah.data.model.Receipt
-import com.junianto.edcsekolah.menu.delete.viewmodel.VoidViewModel
 import com.junianto.edcsekolah.util.PrintingManager
-import com.junianto.edcsekolah.util.getCurrentDate
-import com.junianto.edcsekolah.util.getCurrentDateTime
-import com.junianto.edcsekolah.util.getCurrentTime
 import com.mazenrashed.printooth.Printooth
-import com.mazenrashed.printooth.ui.ScanningActivity
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
-class DeletePinFragment : Fragment() {
+class QrisEnterPinFragment : Fragment() {
 
     private val appViewModel: AppViewModel by viewModels()
-    private val voidViewModel: VoidViewModel by viewModels()
 
-    private lateinit var traceId: String
-    private lateinit var cardId: String
     private lateinit var amount: String
-    private var paymentType: Int = 0
-
     private lateinit var schoolName: String
     private lateinit var majorName: String
     private lateinit var schoolLogo: String
@@ -75,7 +60,6 @@ class DeletePinFragment : Fragment() {
 
     private lateinit var tvSchoolName: TextView
     private lateinit var tvSchoolAddress: TextView
-
     private lateinit var ivSchoolLogo: ImageView
 
     override fun onCreateView(
@@ -83,20 +67,13 @@ class DeletePinFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_delete_pin, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_qris_enter_pin, container, false)
 
         // Retrieve the bundle from arguments
         val bundle = arguments
         if (bundle != null) {
-            traceId = bundle.getString("trace_id", "") ?: ""
-            cardId = bundle.getString("card_id", "") ?: ""
             amount = bundle.getString("amount", "") ?: ""
-            paymentType = bundle.getInt("payment_type", 1)
-
-            Timber.d("DELETE PIN FRAGMENT BUNDLE : $traceId, $cardId, $amount")
         }
-
-        ivSchoolLogo = rootView.findViewById(R.id.iv_school_logo)
 
         // SETUP VIEW
         etPin1 = rootView.findViewById(R.id.et_pin_1)
@@ -123,6 +100,8 @@ class DeletePinFragment : Fragment() {
 
         tvSchoolName = rootView.findViewById(R.id.tv_school_name)
         tvSchoolAddress = rootView.findViewById(R.id.tv_school_address)
+
+        ivSchoolLogo = rootView.findViewById(R.id.iv_school_logo)
 
         pinEditTexts = listOf(etPin1, etPin2, etPin3, etPin4, etPin5, etPin6)
 
@@ -190,9 +169,6 @@ class DeletePinFragment : Fragment() {
         btnPinClear.setOnClickListener {
             clearPin()
         }
-        btnPinStop.setOnClickListener {
-            findNavController().popBackStack()
-        }
     }
 
     private fun appendPinNumber(number: String) {
@@ -220,79 +196,33 @@ class DeletePinFragment : Fragment() {
 
         if(enteredPin == "000000") {
             if (!Printooth.hasPairedPrinter()) {
-                val scanningIntent = Intent(requireContext(), ScanningActivity::class.java)
-                resultLauncher.launch(scanningIntent)
+                if (isSdkInitialized) {
+                    A90PrintManager.printQRIS(
+                        requireContext(),
+                        schoolLogo,
+                        schoolName,
+                        majorName,
+                        isImagePrinted,
+                        amount,
+                    )
+                } else {
+                    Toast.makeText(requireContext(), R.string.please_connect_to_bluetooth_printer, Toast.LENGTH_LONG).show()
+                }
             } else {
-                printReceipt()
+                PrintingManager.printQRIS(
+                    requireContext(),
+                    schoolLogo,
+                    schoolName,
+                    majorName,
+                    isImagePrinted,
+                    amount,
+                )
             }
+            findNavController().navigate(R.id.action_qrisEnterPinFragment_to_qrisDetailFragment, Bundle().apply {
+                putString("amount", amount)
+            })
         } else {
             Toast.makeText(requireContext(), "PIN Salah", Toast.LENGTH_SHORT).show()
-        }
-        // Perform validation or processing with enteredPin
-    }
-
-    /* Inbuilt activity to pair device with printer or select from list of pair bluetooth devices */
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == ScanningActivity.SCANNING_FOR_PRINTER &&  result.resultCode == Activity.RESULT_OK) {
-            printReceipt()
-        }
-    }
-
-    private fun printReceipt() {
-        if (!Printooth.hasPairedPrinter()) {
-            if (isSdkInitialized) {
-                A90PrintManager.printReceiptSuccess(
-                    context = requireContext(),
-                    schoolLogo = schoolLogo,
-                    schoolName = schoolName,
-                    majorName = majorName,
-                    traceId = traceId.toInt(),
-                    date = getCurrentDate(),
-                    time = getCurrentTime(),
-                    paymentType = paymentType,
-                    amount = amount,
-                    cardId = cardId,
-                    type = "VOID",
-                    reprint = false,
-                    isImagePrint = isImagePrinted
-                )
-
-                voidViewModel.deleteReceiptById(traceId.toInt())
-
-                findNavController().navigate(R.id.action_deletePinFragment_to_deleteSuccessFragment, Bundle().apply {
-                    putString("trace_id", traceId)
-                    putString("card_id", cardId)
-                    putString("amount", amount)
-                    putInt("payment_type", paymentType)
-                })
-            } else {
-                Toast.makeText(requireContext(), R.string.please_connect_to_bluetooth_printer, Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            PrintingManager.printManager(
-                context = requireContext(),
-                schoolLogo = schoolLogo,
-                schoolName = schoolName,
-                majorName = majorName,
-                traceId = traceId.toInt(),
-                date = getCurrentDate(),
-                time = getCurrentTime(),
-                paymentType = paymentType,
-                amount = amount,
-                cardId = cardId,
-                type = "VOID",
-                reprint = false,
-                isImagePrint = isImagePrinted
-            )
-
-            voidViewModel.deleteReceiptById(traceId.toInt())
-
-            findNavController().navigate(R.id.action_deletePinFragment_to_deleteSuccessFragment, Bundle().apply {
-                putString("trace_id", traceId)
-                putString("card_id", cardId)
-                putString("amount", amount)
-                putInt("payment_type", paymentType)
-            })
         }
     }
 }

@@ -121,7 +121,7 @@ class QrisEnterAmountFragment : Fragment() {
         btnPinOk.setOnClickListener {
             Timber.d("Amount: ${etAmount.text}")
             if (etAmount.text.toString() != "0" && etAmount.text.toString() != "") {
-                findNavController().navigate(R.id.action_qrisEnterAmountFragment_to_qrisDetailFragment, Bundle().apply {
+                findNavController().navigate(R.id.action_qrisEnterAmountFragment_to_qrisEnterPinFragment, Bundle().apply {
                     putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
                 })
             } else {

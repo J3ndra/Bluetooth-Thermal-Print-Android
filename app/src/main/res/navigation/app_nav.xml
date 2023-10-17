@@ -220,7 +220,7 @@
     <fragment
         android:id="@+id/a90NfcTapFragment"
         android:name="com.junianto.edcsekolah.menu.emoney.a90.A90NfcTapFragment"
-        android:label="fragment_a90_nfc_tap"
+        android:label="NFC TAP"
         tools:layout="@layout/fragment_a90_nfc_tap" >
         <action
             android:id="@+id/action_a90NfcTapFragment_to_menuFragment"
@@ -232,16 +232,16 @@
     <fragment
         android:id="@+id/qrisEnterAmountFragment"
         android:name="com.junianto.edcsekolah.menu.qris.QrisEnterAmountFragment"
-        android:label="fragment_qris_enter_amount"
+        android:label="QRIS ENTER AMOUNT"
         tools:layout="@layout/fragment_qris_enter_amount" >
         <action
-            android:id="@+id/action_qrisEnterAmountFragment_to_qrisDetailFragment"
-            app:destination="@id/qrisDetailFragment" />
+            android:id="@+id/action_qrisEnterAmountFragment_to_qrisEnterPinFragment"
+            app:destination="@id/qrisEnterPinFragment" />
     </fragment>
     <fragment
         android:id="@+id/qrisDetailFragment"
         android:name="com.junianto.edcsekolah.menu.qris.QrisDetailFragment"
-        android:label="fragment_qris_detail"
+        android:label="QRIS DETAIL"
         tools:layout="@layout/fragment_qris_detail" >
         <action
             android:id="@+id/action_qrisDetailFragment_to_qrisSuccessFragment"
@@ -250,10 +250,21 @@
     <fragment
         android:id="@+id/qrisSuccessFragment"
         android:name="com.junianto.edcsekolah.menu.qris.QrisSuccessFragment"
-        android:label="fragment_qris_success"
+        android:label="QRIS SUCCESS"
         tools:layout="@layout/fragment_qris_success" >
         <action
-            android:id="@+id/action_qrisSuccessFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
+            android:id="@+id/action_qrisSuccessFragment_to_appFragment"
+            app:destination="@id/appFragment"
+            app:popUpTo="@id/appFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrisEnterPinFragment"
+        android:name="com.junianto.edcsekolah.menu.qris.QrisEnterPinFragment"
+        android:label="QRIS ENTER PIN"
+        tools:layout="@layout/fragment_qris_enter_pin" >
+        <action
+            android:id="@+id/action_qrisEnterPinFragment_to_qrisDetailFragment"
+            app:destination="@id/qrisDetailFragment" />
     </fragment>
 </navigation>

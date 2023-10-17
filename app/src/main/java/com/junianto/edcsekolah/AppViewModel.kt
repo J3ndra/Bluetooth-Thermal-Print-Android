@@ -22,4 +22,10 @@ class AppViewModel @Inject constructor(private val appSetupRepository: AppSetupR
             appSetupRepository.updateAppSetup(schoolName, schoolAddress, majorName, schoolLogo, isImagePrinted)
         }
     }
+
+    fun updateSdkInitialized(isSdkInitialized: Boolean) {
+        viewModelScope.launch {
+            appSetupRepository.updateSdkInitialized(isSdkInitialized)
+        }
+    }
 }
