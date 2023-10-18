@@ -105,7 +105,7 @@ object A90PrintManager {
                 2 -> paymentText = "NFC"
                 3 -> paymentText = "QRIS"
                 4 -> paymentText = "IC CARD"
-                5 -> paymentText = "MAGNETIC"
+                5 -> paymentText = "MAGCARD"
             }
             PrinterApi.PrnStr_Api("PEMBAYARAN : $paymentText")
             PrinterApi.PrnStr_Api("CARD ID : ${receipt.cardId}")
@@ -143,7 +143,9 @@ object A90PrintManager {
         PrinterApi.printSetAlign_Api(1)
         PrinterApi.printSetTextSize_Api(18)
         PrinterApi.printSetBlodText_Api(false)
-        PrinterApi.PrnStr_Api("CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND/OR SERVICES")
+        PrinterApi.PrnStr_Api("""
+            CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND/OR SERVICES
+        """.trimIndent())
         var copyText = ""
         copyText = if (reprint) {
             "** BANK COPY **"
@@ -240,7 +242,7 @@ object A90PrintManager {
             2 -> paymentText = "NFC"
             3 -> paymentText = "QRIS"
             4 -> paymentText = "IC CARD"
-            5 -> paymentText = "MAGNETIC"
+            5 -> paymentText = "MAGCARD"
         }
         PrinterApi.PrnStr_Api("PEMBAYARAN : $paymentText")
         PrinterApi.PrnStr_Api("CARD ID : $cardId")

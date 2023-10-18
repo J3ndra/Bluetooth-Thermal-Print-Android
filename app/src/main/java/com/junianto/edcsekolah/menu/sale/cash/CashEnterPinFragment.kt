@@ -100,7 +100,7 @@ class CashEnterPinFragment : Fragment() {
                 4
             }
 
-            "MAGNETIC" -> {
+            "MAGCARD" -> {
                 5
             }
 

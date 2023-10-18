@@ -60,7 +60,7 @@ class ReprintAdapter : RecyclerView.Adapter<ReprintAdapter.ReprintViewHolder>() 
                 2 -> "Transaksi NFC"
                 3 -> "Transaksi QRIS"
                 4 -> "Transaksi IC Card"
-                5 -> "Transaksi Magnetic"
+                5 -> "Transaksi Magnetic Card"
                 else -> "Transaksi Tunai"
             }
 

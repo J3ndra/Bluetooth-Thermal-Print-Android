@@ -111,5 +111,7 @@
     <string name="pembayaran_melalui_ic_card">Pembayaran melalui IC Card</string>
     <string name="insert_card">INSERT CARD</string>
     <string name="masukkan_kartu_ic_card_anda_ke_mesin">Masukkan kartu IC Card anda ke mesin</string>
+    <string name="swipe_card">SWIPE CARD</string>
+    <string name="gesekkan_kartu_anda">Gesekkan kartu Anda</string>
 
 </resources>

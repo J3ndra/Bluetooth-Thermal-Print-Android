@@ -46,6 +46,12 @@ class SaleFragment : Fragment() {
             })
         }
 
+        cvMagneticCard.setOnClickListener {
+            findNavController().navigate(R.id.action_saleFragment_to_cashEnterAmountFragment, Bundle().apply {
+                putString("paymentType", "MAGCARD")
+            })
+        }
+
 //        cvCashless.setOnClickListener {
 //            AlertDialog.Builder(requireContext())
 //                .setTitle("Coming Soon")

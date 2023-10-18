@@ -62,6 +62,7 @@ class SetupFragment : Fragment(), PrintingCallback {
 
     private lateinit var schoolLogo: String
     private var isImagePrinted = false
+    private var isSdkInitialized = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,6 +91,7 @@ class SetupFragment : Fragment(), PrintingCallback {
             schoolLogo = appSetup.school_logo
 
             isImagePrinted = appSetup.is_image_printed
+            isSdkInitialized = appSetup.is_sdk_initialized
 
             cbIsImagePrinted.isChecked = isImagePrinted
 
@@ -128,52 +130,28 @@ class SetupFragment : Fragment(), PrintingCallback {
             appViewModel.updateAppSetup(schoolName, schoolAddress, majorName, schoolLogo, isImagePrinted)
         }
 
-        val cpuArchitecture = DeviceInfo.getCpuArchitecture()
-
         btnCetak = view.findViewById(R.id.btn_cetak)
         btnCetak.setOnClickListener {
             if (!Printooth.hasPairedPrinter()) {
-                when (cpuArchitecture) {
-                    "armeabi" -> {
-//                        A90PrintManager.printReceiptText(requireContext())
-                        A90PrintManager.printReceiptSuccess(
-                            requireContext(),
-                            schoolLogo,
-                            etSchoolName.text.toString(),
-                            etMajorName.text.toString(),
-                            123456,
-                            "12/12/2021",
-                            "12:12:12",
-                            1,
-                            "1234567890",
-                            "100000",
-                            "Pembayaran SPP",
-                            reprint = false,
-                            isImagePrint = isImagePrinted,
-                        )
-                    }
-                    "armeabi-v7a" -> {
-//                        A90PrintManager.printReceiptText(requireContext())
-                        A90PrintManager.printReceiptSuccess(
-                            requireContext(),
-                            schoolLogo,
-                            etSchoolName.text.toString(),
-                            etMajorName.text.toString(),
-                            123456,
-                            "12/12/2021",
-                            "12:12:12",
-                            1,
-                            "1234567890",
-                            "100000",
-                            "Pembayaran SPP",
-                            reprint = false,
-                            isImagePrint = isImagePrinted,
-                        )
-                    }
-                    else -> {
-                        Toast.makeText(requireContext(), "Please connect the thermal printer in setting.", Toast.LENGTH_LONG).show()
-                    }
-                }
+               if (isSdkInitialized) {
+                   A90PrintManager.printReceiptSuccess(
+                       requireContext(),
+                       schoolLogo,
+                       etSchoolName.text.toString(),
+                       etMajorName.text.toString(),
+                       123456,
+                       "12/12/2021",
+                       "12:12:12",
+                       1,
+                       "1234567890",
+                       "100000",
+                       "Pembayaran SPP",
+                       reprint = false,
+                       isImagePrint = isImagePrinted,
+                   )
+               } else {
+                   Toast.makeText(requireContext(), R.string.please_connect_to_bluetooth_printer, Toast.LENGTH_SHORT).show()
+               }
 
             } else {
                 printDetails()

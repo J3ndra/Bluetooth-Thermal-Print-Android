@@ -199,6 +199,9 @@
         <action
             android:id="@+id/action_cashEnterAmountFragment_to_icCardFragment"
             app:destination="@id/icCardFragment" />
+        <action
+            android:id="@+id/action_cashEnterAmountFragment_to_magneticCardFragment"
+            app:destination="@id/magneticCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/cashEnterPinFragment"
@@ -280,6 +283,20 @@
             app:destination="@id/cashEnterPinFragment" />
         <action
             android:id="@+id/action_icCardFragment_to_menuFragment"
+            app:destination="@id/menuFragment"
+            app:popUpTo="@id/menuFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/magneticCardFragment"
+        android:name="com.junianto.edcsekolah.menu.sale.magnetic.MagneticCardFragment"
+        android:label="fragment_magnetic_card"
+        tools:layout="@layout/fragment_magnetic_card" >
+        <action
+            android:id="@+id/action_magneticCardFragment_to_cashEnterPinFragment"
+            app:destination="@id/cashEnterPinFragment" />
+        <action
+            android:id="@+id/action_magneticCardFragment_to_menuFragment"
             app:destination="@id/menuFragment"
             app:popUpTo="@id/menuFragment"
             app:popUpToInclusive="true" />

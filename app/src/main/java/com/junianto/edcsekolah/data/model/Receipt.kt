@@ -20,5 +20,5 @@ data class Receipt(
     val cardId: String,
 
     @ColumnInfo(name = "paymentType")
-    val paymentType: Int, // 1 = CASH, 2 = NFC, 3 = QR, 4 = IC, 5 = MAGNETIC
+    val paymentType: Int, // 1 = CASH, 2 = NFC, 3 = QRIS, 4 = IC CARD, 5 = MAGCARD
 )

@@ -50,7 +50,7 @@ class SettlementAdapter : RecyclerView.Adapter<SettlementAdapter.ViewHolder>() {
                 2 -> typeText = "NFC"
                 3 -> typeText = "QRIS"
                 4 -> typeText = "IC CARD"
-                5 -> typeText = "MAGNETIC"
+                5 -> typeText = "MAGCARD"
             }
 
             tvReceiptId.text = "TRACE NO : ${receipt.id}"

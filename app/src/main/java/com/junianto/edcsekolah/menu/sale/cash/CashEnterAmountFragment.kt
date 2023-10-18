@@ -139,8 +139,10 @@ class CashEnterAmountFragment : Fragment() {
                     findNavController().navigate(R.id.action_cashEnterAmountFragment_to_icCardFragment, Bundle().apply {
                         putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
                     })
-                } else if (paymentType == "EMONEY") {
-                    // TODO
+                } else if (paymentType == "MAGCARD") {
+                    findNavController().navigate(R.id.action_cashEnterAmountFragment_to_magneticCardFragment, Bundle().apply {
+                        putString("amount", etAmount.text.toString().replace(".", "").replace(",", ""))
+                    })
                 } else {
                     Toast.makeText(requireContext(), "Tipe pembayaran tidak ditemukan!", Toast.LENGTH_SHORT).show()
                 }
