@@ -113,5 +113,6 @@
     <string name="masukkan_kartu_ic_card_anda_ke_mesin">Masukkan kartu IC Card anda ke mesin</string>
     <string name="swipe_card">SWIPE CARD</string>
     <string name="gesekkan_kartu_anda">Gesekkan kartu Anda</string>
+    <string name="perangkat_tidak_didukung">Mohon maaf, sepertinya perangkat Anda tidak mendukung fitur ini.</string>
 
 </resources>
